@@ -8,12 +8,11 @@ package com.mycompany.bookstorewebapp.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class BookController {
-    @RequestMapping("/book")
-    public String getBook() {
-        return "single-book";
+public class HomeController {
+    @GetMapping({"/", "/index"})
+    public String listBook(Model model) {
+        return "index";
     }
 }
