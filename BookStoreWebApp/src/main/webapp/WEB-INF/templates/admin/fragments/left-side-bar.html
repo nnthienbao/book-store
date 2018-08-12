@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+    <body>
+        <div id="sidebar-nav" class="sidebar" th:fragment="left-side-bar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                            <li><a th:href="@{/admin/index.html}"><i class="lnr lnr-list"></i> <span>Danh sách sách</span></a></li>
+                            <li><a th:href="@{/admin/addbook.html}"><i class="lnr lnr-book"></i> <span>Thêm sách</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </body>
+</html>

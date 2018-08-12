@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Admin</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" th:href="@{/static/admin/assets/vendor/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+	<link rel="stylesheet" th:href="@{/static/admin/assets/vendor/chartist/css/chartist-custom.css}">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" th:href="@{/static/admin/assets/css/main.css}">
+	<!-- MY CSS -->
+	<link rel="stylesheet" th:href="@{/static/admin/assets/css/style.css}">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png">
+	<!--TOAST -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+
+<body>
+	<!-- WRAPPER -->
+	<div id="wrapper">
+		<!-- NAVBAR -->
+                <div th:replace="admin/fragments/navbar :: navbar"></div>
+		<!-- END NAVBAR -->
+		<!-- LEFT SIDEBAR -->
+                <div th:replace="admin/fragments/left-side-bar:: left-side-bar"></div>
+		<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			<div class="main-content">
+				<div class="container-fluid">
+					<!-- OVERVIEW -->
+					<div class="panel panel-headline">
+						<div class="panel-heading">
+							<h3 class="panel-title">Danh sách sách</h3>
+						</div>
+						<div class="panel-body">
+							<table id="table-ds-sanpham" class="table table-bordered">
+								<thead>
+								<tr>
+									<th width="10%" class="text-center">Mã sách</th>
+									<th class="text-center">Tên sách</th>
+									<th class="text-center">Thể loại</th>
+									<th width="10%" class="text-center">Tác giả</th>
+									<th width="10%" class="text-center">Đơn giá</th>
+									<th class="text-center">Ảnh sản phẩm</th>
+									<th width="15%" class="text-center">Thao tác</th>
+								</tr>								
+								</thead>
+								<tbody>
+									<tr class="product">
+									<td class="text-center">1</td>
+									<td>Sách AAA</td>
+									<td class="text-center">Trinh thám</td>
+									<td class="text-center">Conan doyle</td>
+									<td class="text-center">120,000 VNĐ</td>
+									<td><img class="image-product center-item" th:src="@{/static/images/sherlock-homes.jpg}" /></td>
+									<td>
+										<div class="center-item tool-product">
+											<div class="form-group">
+                                                                                            <a th:href="@{/admin/updatebook.html}" class="label label-warning"><i class="fa fa-eye" title="Sửa"></i></a>
+												<a class="label label-danger"><i class="fa fa-trash-o" title="Xóa"></i></a>
+											</div>
+										</div>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN -->
+		<div class="clearfix"></div>
+                <!-- FOOTER -->
+                <div th:replace="admin/fragments/footer :: footer"></div>
+                <!-- END FOOTER -->
+	</div>
+	<!-- END WRAPPER -->
+
+	<!-- Javascript -->
+	<script th:src="@{/static/admin/assets/vendor/jquery/jquery.min.js}"></script>
+	<script th:src="@{/static/admin/assets/vendor/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{/static/admin/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+	<script th:src="@{/static/admin/assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js}"></script>
+	<script th:src="@{/static/admin/assets/vendor/chartist/js/chartist.min.js}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script th:src="@{/static/admin/assets/scripts/klorofil-common.js}"></script>
+	<script th:src="@{/static/admin/assets/scripts/custom.js}"></script>
+</body>
+
+</html>
