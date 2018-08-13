@@ -36,7 +36,7 @@ public class BookAdminController {
     public String getUpdateBook(@RequestParam("id") String id, Model model) {
         try {
             Book bookUpdate = client.findById(id);
-            
+            model.addAttribute("bookUpdate", bookUpdate);
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -44,13 +44,24 @@ public class BookAdminController {
     }
     
     @PostMapping("/addbook")
-    public String postUpdateBook(@ModelAttribute("newbook") Book newbook, Model model) {
+    public String postAddBook(@ModelAttribute("newbook") Book newbook, Model model) {
         try {
             client.add(newbook);            
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "redirect:/admin/addbook";
+    }
+    
+    @PostMapping("/updatebook")
+    public String postUpdateBook(@ModelAttribute("bookUpdate") Book bookUpdate, Model model) {
+        System.out.println(bookUpdate);
+        try {
+            client.update(bookUpdate);
+        } catch (TException ex) {
+            Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "redirect:/admin/updatebook?id=" + bookUpdate.getId();
     }
     
     @PostMapping("/removebook")

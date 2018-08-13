@@ -44,35 +44,35 @@
                                     <h3 class="panel-title">Thêm sách</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <form class="form-horizontal">
+                                    <form th:action="@{/admin/updatebook}" th:object="${bookUpdate}" method="post" class="form-horizontal">
                                         <div class="form-group">
                                             <label for="idSach" class="col-sm-2 control-label">Mã sách</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="idSach" placeholder="Tên sách">
+                                                <input readonly="true" type="text" class="form-control" th:field="*{id}" placeholder="Tên sách">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputTenSach" class="col-sm-2 control-label">Tên sách</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="inputTenSach" placeholder="Tên sách">
+                                                <input type="text" class="form-control" th:field="*{name}" placeholder="Tên sách">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputTheLoai" class="col-sm-2 control-label">Thể loại</label>
                                             <div class="col-sm-10">
-                                                <input type="number" class="form-control" id="inputTheLoai" placeholder="Thể loại">
+                                                <input type="text" class="form-control" th:field="*{kind}" placeholder="Thể loại">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputTacGia" class="col-sm-2 control-label">Tác giả</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="inputTacGia" placeholder="Tác giả">
+                                                <input type="text" class="form-control" th:field="*{author}" placeholder="Tác giả">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputDonGia" class="col-sm-2 control-label">Đơn giá</label>
                                             <div class="col-sm-10">
-                                                <input type="number" class="form-control" id="inputDonGia" placeholder="Đơn giá">
+                                                <input type="number" class="form-control" th:field="*{price}" placeholder="Đơn giá">
                                             </div>
                                         </div>
                                         <div class="form-group">
