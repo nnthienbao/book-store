@@ -5,6 +5,7 @@
  */
 package com.mycompany.bookstoredataservice;
 
+import com.mycompany.bookstoredataservice.dao.BookDaoV2;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -19,7 +20,7 @@ import org.apache.thrift.transport.TTransport;
 public class Test {
     public static void main(String args[]) {
         TTransport transport;
-        try {            
+        try { 
             transport = new TSocket("localhost", 3000);
             transport.open();
             

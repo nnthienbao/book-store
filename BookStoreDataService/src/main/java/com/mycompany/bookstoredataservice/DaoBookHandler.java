@@ -6,6 +6,7 @@
 package com.mycompany.bookstoredataservice;
 
 import com.mycompany.bookstoredataservice.dao.BookDao;
+import com.mycompany.bookstoredataservice.dao.BookDaoV2;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookNotFoundException;
 import com.mycompany.bookstorethriftshare.BookService;
@@ -18,7 +19,7 @@ import org.apache.thrift.TException;
  */
 public class DaoBookHandler implements BookService.Iface{
     
-    private final BookDao bookDao = new BookDao();
+    private final BookDaoV2 bookDao = new BookDaoV2();
     
     @Override
     public List<Book> getList() throws TException {
@@ -26,7 +27,7 @@ public class DaoBookHandler implements BookService.Iface{
     }
 
     @Override
-    public Book findById(String id) throws BookNotFoundException {
+    public Book findById(String id) throws TException {
         return bookDao.findById(id);
     }
 
