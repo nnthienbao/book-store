@@ -47,7 +47,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div th:replace="fragments/left-side-bar :: left-side-bar"></div>
         <div class="w3l_banner_nav_right">
                 <div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub">
-                    <div class="col-md-3 w3ls_w3l_banner_left">
+                    <div class="col-md-3 w3ls_w3l_banner_left" th:each="book : ${listBooks}">
                             <div class="hover14 column">
                                 <div class="agile_top_brand_left_grid w3l_agile_top_brand_left_grid">
                                         <div class="agile_top_brand_left_grid1">
@@ -55,8 +55,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                                         <div class="snipcart-item block">
                                                                 <div class="snipcart-thumb">
                                                                         <a th:href="@{/book.html}"><img th:src="@{/static/images/sherlock-homes.jpg}" alt=" " class="img-responsive" /></a>
-                                                                        <p><strong>Truy Tìm Dấu Bộ Tứ</strong></p>
-                                                                        <h4>160,000 VNĐ</h4>
+                                                                        <p><strong th:text="${book.name}"></strong></p>
+                                                                        <p th:text="${book.author}"></p>
+                                                                        <p th:text="${book.kind}"></p>
+                                                                        <h4>[[${book.price}]] VNĐ</h4>
                                                                 </div>
                                                         </div>
                                                 </figure>

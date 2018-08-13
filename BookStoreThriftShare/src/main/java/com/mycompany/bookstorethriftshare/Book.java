@@ -37,7 +37,9 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
 
   private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)2);
-  private static final org.apache.thrift.protocol.TField AUTHOR_FIELD_DESC = new org.apache.thrift.protocol.TField("author", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField KIND_FIELD_DESC = new org.apache.thrift.protocol.TField("kind", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField AUTHOR_FIELD_DESC = new org.apache.thrift.protocol.TField("author", org.apache.thrift.protocol.TType.STRING, (short)4);
+  private static final org.apache.thrift.protocol.TField PRICE_FIELD_DESC = new org.apache.thrift.protocol.TField("price", org.apache.thrift.protocol.TType.I32, (short)5);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -47,13 +49,17 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
 
   public String id; // required
   public String name; // required
+  public String kind; // required
   public String author; // required
+  public int price; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     ID((short)1, "id"),
     NAME((short)2, "name"),
-    AUTHOR((short)3, "author");
+    KIND((short)3, "kind"),
+    AUTHOR((short)4, "author"),
+    PRICE((short)5, "price");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -72,8 +78,12 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
           return ID;
         case 2: // NAME
           return NAME;
-        case 3: // AUTHOR
+        case 3: // KIND
+          return KIND;
+        case 4: // AUTHOR
           return AUTHOR;
+        case 5: // PRICE
+          return PRICE;
         default:
           return null;
       }
@@ -114,6 +124,8 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
   }
 
   // isset id assignments
+  private static final int __PRICE_ISSET_ID = 0;
+  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -121,8 +133,12 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.NAME, new org.apache.thrift.meta_data.FieldMetaData("name", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.KIND, new org.apache.thrift.meta_data.FieldMetaData("kind", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.AUTHOR, new org.apache.thrift.meta_data.FieldMetaData("author", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.PRICE, new org.apache.thrift.meta_data.FieldMetaData("price", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Book.class, metaDataMap);
   }
@@ -133,27 +149,37 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
   public Book(
     String id,
     String name,
-    String author)
+    String kind,
+    String author,
+    int price)
   {
     this();
     this.id = id;
     this.name = name;
+    this.kind = kind;
     this.author = author;
+    this.price = price;
+    setPriceIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public Book(Book other) {
+    __isset_bitfield = other.__isset_bitfield;
     if (other.isSetId()) {
       this.id = other.id;
     }
     if (other.isSetName()) {
       this.name = other.name;
     }
+    if (other.isSetKind()) {
+      this.kind = other.kind;
+    }
     if (other.isSetAuthor()) {
       this.author = other.author;
     }
+    this.price = other.price;
   }
 
   public Book deepCopy() {
@@ -164,7 +190,10 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
   public void clear() {
     this.id = null;
     this.name = null;
+    this.kind = null;
     this.author = null;
+    setPriceIsSet(false);
+    this.price = 0;
   }
 
   public String getId() {
@@ -215,6 +244,30 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
     }
   }
 
+  public String getKind() {
+    return this.kind;
+  }
+
+  public Book setKind(String kind) {
+    this.kind = kind;
+    return this;
+  }
+
+  public void unsetKind() {
+    this.kind = null;
+  }
+
+  /** Returns true if field kind is set (has been assigned a value) and false otherwise */
+  public boolean isSetKind() {
+    return this.kind != null;
+  }
+
+  public void setKindIsSet(boolean value) {
+    if (!value) {
+      this.kind = null;
+    }
+  }
+
   public String getAuthor() {
     return this.author;
   }
@@ -239,6 +292,29 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
     }
   }
 
+  public int getPrice() {
+    return this.price;
+  }
+
+  public Book setPrice(int price) {
+    this.price = price;
+    setPriceIsSet(true);
+    return this;
+  }
+
+  public void unsetPrice() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __PRICE_ISSET_ID);
+  }
+
+  /** Returns true if field price is set (has been assigned a value) and false otherwise */
+  public boolean isSetPrice() {
+    return EncodingUtils.testBit(__isset_bitfield, __PRICE_ISSET_ID);
+  }
+
+  public void setPriceIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PRICE_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case ID:
@@ -257,11 +333,27 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       }
       break;
 
+    case KIND:
+      if (value == null) {
+        unsetKind();
+      } else {
+        setKind((String)value);
+      }
+      break;
+
     case AUTHOR:
       if (value == null) {
         unsetAuthor();
       } else {
         setAuthor((String)value);
+      }
+      break;
+
+    case PRICE:
+      if (value == null) {
+        unsetPrice();
+      } else {
+        setPrice((Integer)value);
       }
       break;
 
@@ -276,8 +368,14 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
     case NAME:
       return getName();
 
+    case KIND:
+      return getKind();
+
     case AUTHOR:
       return getAuthor();
+
+    case PRICE:
+      return Integer.valueOf(getPrice());
 
     }
     throw new IllegalStateException();
@@ -294,8 +392,12 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       return isSetId();
     case NAME:
       return isSetName();
+    case KIND:
+      return isSetKind();
     case AUTHOR:
       return isSetAuthor();
+    case PRICE:
+      return isSetPrice();
     }
     throw new IllegalStateException();
   }
@@ -331,12 +433,30 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
         return false;
     }
 
+    boolean this_present_kind = true && this.isSetKind();
+    boolean that_present_kind = true && that.isSetKind();
+    if (this_present_kind || that_present_kind) {
+      if (!(this_present_kind && that_present_kind))
+        return false;
+      if (!this.kind.equals(that.kind))
+        return false;
+    }
+
     boolean this_present_author = true && this.isSetAuthor();
     boolean that_present_author = true && that.isSetAuthor();
     if (this_present_author || that_present_author) {
       if (!(this_present_author && that_present_author))
         return false;
       if (!this.author.equals(that.author))
+        return false;
+    }
+
+    boolean this_present_price = true;
+    boolean that_present_price = true;
+    if (this_present_price || that_present_price) {
+      if (!(this_present_price && that_present_price))
+        return false;
+      if (this.price != that.price)
         return false;
     }
 
@@ -376,12 +496,32 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetKind()).compareTo(other.isSetKind());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetKind()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.kind, other.kind);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetAuthor()).compareTo(other.isSetAuthor());
     if (lastComparison != 0) {
       return lastComparison;
     }
     if (isSetAuthor()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.author, other.author);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetPrice()).compareTo(other.isSetPrice());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetPrice()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.price, other.price);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -422,12 +562,24 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
     }
     first = false;
     if (!first) sb.append(", ");
+    sb.append("kind:");
+    if (this.kind == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.kind);
+    }
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("author:");
     if (this.author == null) {
       sb.append("null");
     } else {
       sb.append(this.author);
     }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("price:");
+    sb.append(this.price);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -448,6 +600,8 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
@@ -488,10 +642,26 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 3: // AUTHOR
+          case 3: // KIND
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.kind = iprot.readString();
+              struct.setKindIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 4: // AUTHOR
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
               struct.author = iprot.readString();
               struct.setAuthorIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 5: // PRICE
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.price = iprot.readI32();
+              struct.setPriceIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -521,11 +691,19 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
         oprot.writeString(struct.name);
         oprot.writeFieldEnd();
       }
+      if (struct.kind != null) {
+        oprot.writeFieldBegin(KIND_FIELD_DESC);
+        oprot.writeString(struct.kind);
+        oprot.writeFieldEnd();
+      }
       if (struct.author != null) {
         oprot.writeFieldBegin(AUTHOR_FIELD_DESC);
         oprot.writeString(struct.author);
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldBegin(PRICE_FIELD_DESC);
+      oprot.writeI32(struct.price);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -550,25 +728,37 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       if (struct.isSetName()) {
         optionals.set(1);
       }
-      if (struct.isSetAuthor()) {
+      if (struct.isSetKind()) {
         optionals.set(2);
       }
-      oprot.writeBitSet(optionals, 3);
+      if (struct.isSetAuthor()) {
+        optionals.set(3);
+      }
+      if (struct.isSetPrice()) {
+        optionals.set(4);
+      }
+      oprot.writeBitSet(optionals, 5);
       if (struct.isSetId()) {
         oprot.writeString(struct.id);
       }
       if (struct.isSetName()) {
         oprot.writeString(struct.name);
       }
+      if (struct.isSetKind()) {
+        oprot.writeString(struct.kind);
+      }
       if (struct.isSetAuthor()) {
         oprot.writeString(struct.author);
+      }
+      if (struct.isSetPrice()) {
+        oprot.writeI32(struct.price);
       }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, Book struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(3);
+      BitSet incoming = iprot.readBitSet(5);
       if (incoming.get(0)) {
         struct.id = iprot.readString();
         struct.setIdIsSet(true);
@@ -578,8 +768,16 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
         struct.setNameIsSet(true);
       }
       if (incoming.get(2)) {
+        struct.kind = iprot.readString();
+        struct.setKindIsSet(true);
+      }
+      if (incoming.get(3)) {
         struct.author = iprot.readString();
         struct.setAuthorIsSet(true);
+      }
+      if (incoming.get(4)) {
+        struct.price = iprot.readI32();
+        struct.setPriceIsSet(true);
       }
     }
   }

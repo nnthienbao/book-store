@@ -8,11 +8,26 @@ package com.mycompany.bookstorewebapp.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import com.mycompany.bookstorethriftshare.BookService;
+import com.mycompany.bookstorewebapp.client.Client;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.thrift.TException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 public class HomeController {
+    
+    @Autowired
+    private Client client;
+    
     @GetMapping({"/", "/index"})
     public String listBook(Model model) {
+        try {
+            model.addAttribute("listBooks", client.getList());            
+        } catch (TException ex) {
+            ex.printStackTrace();
+        }
         return "index";
     }
 }

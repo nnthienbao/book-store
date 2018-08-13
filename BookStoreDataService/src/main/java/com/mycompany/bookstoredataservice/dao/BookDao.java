@@ -5,12 +5,14 @@
  */
 package com.mycompany.bookstoredataservice.dao;
 
+import com.mycompany.bookstoredataservice.utils.Utils;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookNotFoundException;
 import com.mycompany.bookstorethriftshare.BookService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import kyotocabinet.Cursor;
 import kyotocabinet.DB;
 import org.apache.thrift.TException;
 
@@ -19,11 +21,20 @@ import org.apache.thrift.TException;
  * @author cpu02453-local
  */
 public class BookDao implements BookService.Iface {
+    
+    private String generateBookId() {
+        DB bookDB = FactoryDb.getDBBook();
+        return bookDB.count() + "";
+    }
+    
     public boolean add(Book newBook) {
         DB bookDB = FactoryDb.getDBBook();
-        String key = bookDB.count() + "";
-        String value = key + "," + newBook.name + "," + newBook.author;
-        bookDB.add(key, value);
+        String bookId = generateBookId();
+        newBook.setId(bookId);
+        
+        byte[] bytes = Utils.toByte(newBook);
+        bookDB.add(bookId.getBytes(), bytes);
+        
         return true;
     }
 
@@ -31,15 +42,11 @@ public class BookDao implements BookService.Iface {
     public List<Book> getList() throws TException {
         List<Book> listBooks = new ArrayList();
         DB bookDB = FactoryDb.getDBBook();
-        List<String> keys = bookDB.match_prefix("", 100);
-        Map<String, String> records = bookDB.get_bulk(keys, false);        
-        for (Map.Entry<String, String> entry : records.entrySet())
-        {
-            String[] arrProps = entry.getValue().split(",");
-            Book book = new Book(entry.getKey(), arrProps[1], arrProps[2]);
-            listBooks.add(book);
+        List<String> keys = bookDB.match_prefix("", 1000);
+        for(String key : keys) {
+            byte[] bytesBook = bookDB.get(key.getBytes());
+            listBooks.add((Book) Utils.toObject(bytesBook));
         }
-        
         return listBooks;
     }
 
@@ -49,19 +56,18 @@ public class BookDao implements BookService.Iface {
         String value = bookDB.get(id);
         if(value == null) throw new BookNotFoundException("Khong tim thay sach");
         
-        String arrProps[] = value.split(",");
+        byte[] bytes = bookDB.get(id.getBytes());
         
-        return new Book(arrProps[0], arrProps[1], arrProps[2]);
+        return (Book)Utils.toObject(bytes);
     }
 
     @Override
     public boolean update(Book updateBook) throws TException {
         DB bookDB = FactoryDb.getDBBook();
-        String value = bookDB.get(updateBook.id);
+        byte[] value = bookDB.get(updateBook.id.getBytes());
         if(value == null) throw new BookNotFoundException("Khong tim thay sach");
         
-        String newValue = updateBook.id + "," + updateBook.name + "," + updateBook.author;
-        return bookDB.replace(updateBook.id, newValue);
+        return bookDB.replace(updateBook.id.getBytes(), Utils.toByte(updateBook));
     }
 
     @Override

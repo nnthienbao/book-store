@@ -26,7 +26,7 @@ public class Test {
             TProtocol protocol = new  TBinaryProtocol(transport);
             BookService.Client client = new BookService.Client(protocol);
             
-            System.out.println(client.add(new Book("", "Hoa co", "Thien Bao")));
+            System.out.println(client.getList());
             
             transport.close();
         } catch (Exception e) {
