@@ -57,22 +57,26 @@
 								</tr>								
 								</thead>
 								<tbody>
-									<tr class="product">
-									<td class="text-center">1</td>
-									<td>Sách AAA</td>
-									<td class="text-center">Trinh thám</td>
-									<td class="text-center">Conan doyle</td>
-									<td class="text-center">120,000 VNĐ</td>
+                                                                    <tr class="product" th:each="book : ${listBooks}">
+									<td class="text-center">[[${book.id}]]</td>
+									<td>[[${book.name}]]</td>
+									<td class="text-center">[[${book.kind}]]</td>
+									<td class="text-center">[[${book.author}]]</td>
+									<td class="text-center">[[${book.price}]] VNĐ</td>
 									<td><img class="image-product center-item" th:src="@{/static/images/sherlock-homes.jpg}" /></td>
 									<td>
 										<div class="center-item tool-product">
 											<div class="form-group">
-                                                                                            <a th:href="@{/admin/updatebook.html}" class="label label-warning"><i class="fa fa-eye" title="Sửa"></i></a>
-												<a class="label label-danger"><i class="fa fa-trash-o" title="Xóa"></i></a>
+                                                                                            <a th:href="@{/admin/updatebook.html(id=${book.id})}" class="label label-warning"><i class="fa fa-eye" title="Sửa"></i></a>                                                                                            
+                                                                                            <form th:action="@{/admin/removebook}" method="POST">
+                                                                                                <input type="hidden" name="idBook" th:value="${book.id}" />
+                                                                                                <a onclick="this.parentNode.submit()" class="label label-danger"><i class="fa fa-trash-o" title="Xóa"></i></a>
+                                                                                            </form>
+                                                                                            
 											</div>
 										</div>
 									</td>
-								</tr>
+                                                                    </tr>
 								</tbody>
 							</table>
 						</div>
