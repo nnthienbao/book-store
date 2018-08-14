@@ -16,7 +16,7 @@ service BookService
 {
     list<Book> getList(),
     Book findById(1:string id),
-    bool add(1:Book newBook),
-    bool update(1:Book updateBook),
-    bool remove(1:string idBook)
+    bool add(1:Book newBook, 2:string token),
+    bool update(1:Book updateBook, 2:string token),
+    bool remove(1:string idBook, 2:string token)
 }

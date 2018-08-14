@@ -31,6 +31,10 @@ public class ClientFactory {
     public BookClient getBookClient() {
         return new BookClient(clientProtocol);
     }
+    
+    public UserClient getUserClient() {
+        return new UserClient(clientProtocol);
+    }
 
     @Override
     protected void finalize() throws Throwable {

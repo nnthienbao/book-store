@@ -63,7 +63,7 @@ public class BookDaoV2 implements BookService.Iface {
     }
 
     @Override
-    public boolean add(Book newBook) throws TException {
+    public boolean add(Book newBook, String token) throws TException {
         DB bookDB = FactoryDb.getDBBookStore();
         String bookId = generateBookId();
         String keyBookName = bookId + ".name";
@@ -80,7 +80,7 @@ public class BookDaoV2 implements BookService.Iface {
     }
 
     @Override
-    public boolean update(Book updateBook) throws TException {
+    public boolean update(Book updateBook, String token) throws TException {
         DB bookDB = FactoryDb.getDBBookStore();
         String bookId = updateBook.getId();
         String keyBookName = bookId + ".name";
@@ -97,7 +97,7 @@ public class BookDaoV2 implements BookService.Iface {
     }
 
     @Override
-    public boolean remove(String bookId) throws TException {
+    public boolean remove(String bookId, String token) throws TException {
         DB bookDB = FactoryDb.getDBBookStore();
         String keyBookName = bookId + ".name";
         String keyBookKind = bookId + ".kind";

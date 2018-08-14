@@ -20,13 +20,18 @@ private final TMultiplexedProtocol mulProtocol;
         client = new UserService.Client(mulProtocol);
     }
     @Override
-    public User getUserByNameAndPassword(String username, String password) throws TException {
-        return client.getUserByNameAndPassword(username, password);
+    public String authenticate(String username, String password) throws TException {
+        return client.authenticate(username, password);
     }
 
     @Override
     public boolean add(User newUser) throws TException {
         return client.add(newUser);
+    }
+
+    @Override
+    public User getUser(String username, String password) throws TException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

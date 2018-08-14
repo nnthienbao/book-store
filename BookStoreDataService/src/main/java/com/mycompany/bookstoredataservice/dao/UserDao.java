@@ -15,18 +15,8 @@ import org.apache.thrift.TException;
 public class UserDao implements UserService.Iface{
 
     @Override
-    public User getUserByNameAndPassword(String username, String password) throws TException {
-        DB db = FactoryDb.getDBBookStore();
-        String keyUserPassword = "user:" + username + ".password";
-        String valueUserPassword = db.get(keyUserPassword);
-        if(valueUserPassword == null || !password.equals(valueUserPassword)) {
-            UserNotFoundException ex = new UserNotFoundException("Khong tim thay user", 101);
-            throw ex;
-        }
-        String keyUserRole = "user:" + username + ".role";
-        String valueUserRole = db.get(keyUserRole);
-        
-        return new User(username, password, valueUserRole);
+    public String authenticate(String username, String password) throws TException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.        
     }
 
     @Override
@@ -42,6 +32,21 @@ public class UserDao implements UserService.Iface{
         db.add(keyUserRole, newUser.role);
         
         return true;
+    }
+
+    @Override
+    public User getUser(String username, String password) throws UserNotFoundException {
+        DB db = FactoryDb.getDBBookStore();
+        String keyUserPassword = "user:" + username + ".password";
+        String valueUserPassword = db.get(keyUserPassword);
+        if(valueUserPassword == null || !password.equals(valueUserPassword)) {
+            UserNotFoundException ex = new UserNotFoundException("Khong tim thay user", 101);
+            throw ex;
+        }
+        String keyUserRole = "user:" + username + ".role";
+        String valueUserRole = db.get(keyUserRole);
+        
+        return new User(username, password, valueUserRole);
     }
     
 }

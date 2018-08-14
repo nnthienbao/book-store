@@ -6,7 +6,6 @@
 package com.mycompany.bookstorewebapp.controller.admin;
 
 import com.mycompany.bookstorethriftshare.Book;
-import com.mycompany.bookstorewebapp.client.BookClient;
 import com.mycompany.bookstorewebapp.client.ClientFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,7 +46,7 @@ public class BookAdminController {
     @PostMapping("/addbook")
     public String postAddBook(@ModelAttribute("newbook") Book newbook, Model model) {
         try {
-            clientFactory.getBookClient().add(newbook);            
+            clientFactory.getBookClient().add(newbook, "");            
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -58,7 +57,7 @@ public class BookAdminController {
     public String postUpdateBook(@ModelAttribute("bookUpdate") Book bookUpdate, Model model) {
         System.out.println(bookUpdate);
         try {
-            clientFactory.getBookClient().update(bookUpdate);
+            clientFactory.getBookClient().update(bookUpdate, "");
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -68,7 +67,7 @@ public class BookAdminController {
     @PostMapping("/removebook")
     public String postRemoveBook(@RequestParam("idBook") String idBook) {
         try {
-            clientFactory.getBookClient().remove(idBook);
+            clientFactory.getBookClient().remove(idBook, "");
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -5,10 +5,8 @@
  */
 package com.mycompany.bookstoredataservice;
 
-import com.mycompany.bookstoredataservice.dao.BookDao;
 import com.mycompany.bookstoredataservice.dao.BookDaoV2;
 import com.mycompany.bookstorethriftshare.Book;
-import com.mycompany.bookstorethriftshare.BookNotFoundException;
 import com.mycompany.bookstorethriftshare.BookService;
 import java.util.List;
 import org.apache.thrift.TException;
@@ -32,17 +30,17 @@ public class BookHandler implements BookService.Iface{
     }
 
     @Override
-    public boolean add(Book newBook) throws TException{
-        return bookDao.add(newBook);
+    public boolean add(Book newBook, String token) throws TException{
+        return bookDao.add(newBook, token);
     }
 
     @Override
-    public boolean update(Book updateBook) throws TException {
-        return bookDao.update(updateBook);
+    public boolean update(Book updateBook, String token) throws TException {
+        return bookDao.update(updateBook, token);
     }
 
     @Override
-    public boolean remove(String idBook) throws TException {
-        return bookDao.remove(idBook);
+    public boolean remove(String idBook, String token) throws TException {
+        return bookDao.remove(idBook, token);
     }
 }

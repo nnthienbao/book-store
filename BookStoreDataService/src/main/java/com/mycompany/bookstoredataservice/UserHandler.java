@@ -15,13 +15,18 @@ public class UserHandler implements UserService.Iface{
     private final UserDao userDao = new UserDao();
     
     @Override
-    public User getUserByNameAndPassword(String username, String password) throws TException {
-        return userDao.getUserByNameAndPassword(username, password);
+    public String authenticate(String username, String password) throws TException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public boolean add(User newUser) throws TException {
         return userDao.add(newUser);
+    }
+
+    @Override
+    public User getUser(String username, String password) throws TException {
+        return userDao.getUser(username, password);
     }
     
 }

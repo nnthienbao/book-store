@@ -40,11 +40,11 @@ public class BookService {
 
     public Book findById(String id) throws org.apache.thrift.TException;
 
-    public boolean add(Book newBook) throws org.apache.thrift.TException;
+    public boolean add(Book newBook, String token) throws org.apache.thrift.TException;
 
-    public boolean update(Book updateBook) throws org.apache.thrift.TException;
+    public boolean update(Book updateBook, String token) throws org.apache.thrift.TException;
 
-    public boolean remove(String idBook) throws org.apache.thrift.TException;
+    public boolean remove(String idBook, String token) throws org.apache.thrift.TException;
 
   }
 
@@ -54,11 +54,11 @@ public class BookService {
 
     public void findById(String id, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void add(Book newBook, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void add(Book newBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void update(Book updateBook, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void update(Book updateBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void remove(String idBook, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void remove(String idBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -127,16 +127,17 @@ public class BookService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "findById failed: unknown result");
     }
 
-    public boolean add(Book newBook) throws org.apache.thrift.TException
+    public boolean add(Book newBook, String token) throws org.apache.thrift.TException
     {
-      send_add(newBook);
+      send_add(newBook, token);
       return recv_add();
     }
 
-    public void send_add(Book newBook) throws org.apache.thrift.TException
+    public void send_add(Book newBook, String token) throws org.apache.thrift.TException
     {
       add_args args = new add_args();
       args.setNewBook(newBook);
+      args.setToken(token);
       sendBase("add", args);
     }
 
@@ -150,16 +151,17 @@ public class BookService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "add failed: unknown result");
     }
 
-    public boolean update(Book updateBook) throws org.apache.thrift.TException
+    public boolean update(Book updateBook, String token) throws org.apache.thrift.TException
     {
-      send_update(updateBook);
+      send_update(updateBook, token);
       return recv_update();
     }
 
-    public void send_update(Book updateBook) throws org.apache.thrift.TException
+    public void send_update(Book updateBook, String token) throws org.apache.thrift.TException
     {
       update_args args = new update_args();
       args.setUpdateBook(updateBook);
+      args.setToken(token);
       sendBase("update", args);
     }
 
@@ -173,16 +175,17 @@ public class BookService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "update failed: unknown result");
     }
 
-    public boolean remove(String idBook) throws org.apache.thrift.TException
+    public boolean remove(String idBook, String token) throws org.apache.thrift.TException
     {
-      send_remove(idBook);
+      send_remove(idBook, token);
       return recv_remove();
     }
 
-    public void send_remove(String idBook) throws org.apache.thrift.TException
+    public void send_remove(String idBook, String token) throws org.apache.thrift.TException
     {
       remove_args args = new remove_args();
       args.setIdBook(idBook);
+      args.setToken(token);
       sendBase("remove", args);
     }
 
@@ -275,24 +278,27 @@ public class BookService {
       }
     }
 
-    public void add(Book newBook, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void add(Book newBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      add_call method_call = new add_call(newBook, resultHandler, this, ___protocolFactory, ___transport);
+      add_call method_call = new add_call(newBook, token, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class add_call extends org.apache.thrift.async.TAsyncMethodCall {
       private Book newBook;
-      public add_call(Book newBook, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String token;
+      public add_call(Book newBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.newBook = newBook;
+        this.token = token;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("add", org.apache.thrift.protocol.TMessageType.CALL, 0));
         add_args args = new add_args();
         args.setNewBook(newBook);
+        args.setToken(token);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -307,24 +313,27 @@ public class BookService {
       }
     }
 
-    public void update(Book updateBook, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void update(Book updateBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      update_call method_call = new update_call(updateBook, resultHandler, this, ___protocolFactory, ___transport);
+      update_call method_call = new update_call(updateBook, token, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class update_call extends org.apache.thrift.async.TAsyncMethodCall {
       private Book updateBook;
-      public update_call(Book updateBook, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String token;
+      public update_call(Book updateBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.updateBook = updateBook;
+        this.token = token;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("update", org.apache.thrift.protocol.TMessageType.CALL, 0));
         update_args args = new update_args();
         args.setUpdateBook(updateBook);
+        args.setToken(token);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -339,24 +348,27 @@ public class BookService {
       }
     }
 
-    public void remove(String idBook, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void remove(String idBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      remove_call method_call = new remove_call(idBook, resultHandler, this, ___protocolFactory, ___transport);
+      remove_call method_call = new remove_call(idBook, token, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class remove_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String idBook;
-      public remove_call(String idBook, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String token;
+      public remove_call(String idBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.idBook = idBook;
+        this.token = token;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("remove", org.apache.thrift.protocol.TMessageType.CALL, 0));
         remove_args args = new remove_args();
         args.setIdBook(idBook);
+        args.setToken(token);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -447,7 +459,7 @@ public class BookService {
 
       public add_result getResult(I iface, add_args args) throws org.apache.thrift.TException {
         add_result result = new add_result();
-        result.success = iface.add(args.newBook);
+        result.success = iface.add(args.newBook, args.token);
         result.setSuccessIsSet(true);
         return result;
       }
@@ -468,7 +480,7 @@ public class BookService {
 
       public update_result getResult(I iface, update_args args) throws org.apache.thrift.TException {
         update_result result = new update_result();
-        result.success = iface.update(args.updateBook);
+        result.success = iface.update(args.updateBook, args.token);
         result.setSuccessIsSet(true);
         return result;
       }
@@ -489,7 +501,7 @@ public class BookService {
 
       public remove_result getResult(I iface, remove_args args) throws org.apache.thrift.TException {
         remove_result result = new remove_result();
-        result.success = iface.remove(args.idBook);
+        result.success = iface.remove(args.idBook, args.token);
         result.setSuccessIsSet(true);
         return result;
       }
@@ -666,7 +678,7 @@ public class BookService {
       }
 
       public void start(I iface, add_args args, org.apache.thrift.async.AsyncMethodCallback<Boolean> resultHandler) throws TException {
-        iface.add(args.newBook,resultHandler);
+        iface.add(args.newBook, args.token,resultHandler);
       }
     }
 
@@ -718,7 +730,7 @@ public class BookService {
       }
 
       public void start(I iface, update_args args, org.apache.thrift.async.AsyncMethodCallback<Boolean> resultHandler) throws TException {
-        iface.update(args.updateBook,resultHandler);
+        iface.update(args.updateBook, args.token,resultHandler);
       }
     }
 
@@ -770,7 +782,7 @@ public class BookService {
       }
 
       public void start(I iface, remove_args args, org.apache.thrift.async.AsyncMethodCallback<Boolean> resultHandler) throws TException {
-        iface.remove(args.idBook,resultHandler);
+        iface.remove(args.idBook, args.token,resultHandler);
       }
     }
 
@@ -2147,6 +2159,7 @@ public class BookService {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("add_args");
 
     private static final org.apache.thrift.protocol.TField NEW_BOOK_FIELD_DESC = new org.apache.thrift.protocol.TField("newBook", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("token", org.apache.thrift.protocol.TType.STRING, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -2155,10 +2168,12 @@ public class BookService {
     }
 
     public Book newBook; // required
+    public String token; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      NEW_BOOK((short)1, "newBook");
+      NEW_BOOK((short)1, "newBook"),
+      TOKEN((short)2, "token");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -2175,6 +2190,8 @@ public class BookService {
         switch(fieldId) {
           case 1: // NEW_BOOK
             return NEW_BOOK;
+          case 2: // TOKEN
+            return TOKEN;
           default:
             return null;
         }
@@ -2220,6 +2237,8 @@ public class BookService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.NEW_BOOK, new org.apache.thrift.meta_data.FieldMetaData("newBook", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Book.class)));
+      tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(add_args.class, metaDataMap);
     }
@@ -2228,10 +2247,12 @@ public class BookService {
     }
 
     public add_args(
-      Book newBook)
+      Book newBook,
+      String token)
     {
       this();
       this.newBook = newBook;
+      this.token = token;
     }
 
     /**
@@ -2240,6 +2261,9 @@ public class BookService {
     public add_args(add_args other) {
       if (other.isSetNewBook()) {
         this.newBook = new Book(other.newBook);
+      }
+      if (other.isSetToken()) {
+        this.token = other.token;
       }
     }
 
@@ -2250,6 +2274,7 @@ public class BookService {
     @Override
     public void clear() {
       this.newBook = null;
+      this.token = null;
     }
 
     public Book getNewBook() {
@@ -2276,6 +2301,30 @@ public class BookService {
       }
     }
 
+    public String getToken() {
+      return this.token;
+    }
+
+    public add_args setToken(String token) {
+      this.token = token;
+      return this;
+    }
+
+    public void unsetToken() {
+      this.token = null;
+    }
+
+    /** Returns true if field token is set (has been assigned a value) and false otherwise */
+    public boolean isSetToken() {
+      return this.token != null;
+    }
+
+    public void setTokenIsSet(boolean value) {
+      if (!value) {
+        this.token = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case NEW_BOOK:
@@ -2286,6 +2335,14 @@ public class BookService {
         }
         break;
 
+      case TOKEN:
+        if (value == null) {
+          unsetToken();
+        } else {
+          setToken((String)value);
+        }
+        break;
+
       }
     }
 
@@ -2293,6 +2350,9 @@ public class BookService {
       switch (field) {
       case NEW_BOOK:
         return getNewBook();
+
+      case TOKEN:
+        return getToken();
 
       }
       throw new IllegalStateException();
@@ -2307,6 +2367,8 @@ public class BookService {
       switch (field) {
       case NEW_BOOK:
         return isSetNewBook();
+      case TOKEN:
+        return isSetToken();
       }
       throw new IllegalStateException();
     }
@@ -2330,6 +2392,15 @@ public class BookService {
         if (!(this_present_newBook && that_present_newBook))
           return false;
         if (!this.newBook.equals(that.newBook))
+          return false;
+      }
+
+      boolean this_present_token = true && this.isSetToken();
+      boolean that_present_token = true && that.isSetToken();
+      if (this_present_token || that_present_token) {
+        if (!(this_present_token && that_present_token))
+          return false;
+        if (!this.token.equals(that.token))
           return false;
       }
 
@@ -2359,6 +2430,16 @@ public class BookService {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetToken()).compareTo(other.isSetToken());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetToken()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.token, other.token);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -2384,6 +2465,14 @@ public class BookService {
         sb.append("null");
       } else {
         sb.append(this.newBook);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("token:");
+      if (this.token == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.token);
       }
       first = false;
       sb.append(")");
@@ -2441,6 +2530,14 @@ public class BookService {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 2: // TOKEN
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.token = iprot.readString();
+                struct.setTokenIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -2459,6 +2556,11 @@ public class BookService {
         if (struct.newBook != null) {
           oprot.writeFieldBegin(NEW_BOOK_FIELD_DESC);
           struct.newBook.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.token != null) {
+          oprot.writeFieldBegin(TOKEN_FIELD_DESC);
+          oprot.writeString(struct.token);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -2482,20 +2584,30 @@ public class BookService {
         if (struct.isSetNewBook()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetToken()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetNewBook()) {
           struct.newBook.write(oprot);
+        }
+        if (struct.isSetToken()) {
+          oprot.writeString(struct.token);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, add_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
+        BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.newBook = new Book();
           struct.newBook.read(iprot);
           struct.setNewBookIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.token = iprot.readString();
+          struct.setTokenIsSet(true);
         }
       }
     }
@@ -2860,6 +2972,7 @@ public class BookService {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("update_args");
 
     private static final org.apache.thrift.protocol.TField UPDATE_BOOK_FIELD_DESC = new org.apache.thrift.protocol.TField("updateBook", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("token", org.apache.thrift.protocol.TType.STRING, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -2868,10 +2981,12 @@ public class BookService {
     }
 
     public Book updateBook; // required
+    public String token; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      UPDATE_BOOK((short)1, "updateBook");
+      UPDATE_BOOK((short)1, "updateBook"),
+      TOKEN((short)2, "token");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -2888,6 +3003,8 @@ public class BookService {
         switch(fieldId) {
           case 1: // UPDATE_BOOK
             return UPDATE_BOOK;
+          case 2: // TOKEN
+            return TOKEN;
           default:
             return null;
         }
@@ -2933,6 +3050,8 @@ public class BookService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.UPDATE_BOOK, new org.apache.thrift.meta_data.FieldMetaData("updateBook", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Book.class)));
+      tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(update_args.class, metaDataMap);
     }
@@ -2941,10 +3060,12 @@ public class BookService {
     }
 
     public update_args(
-      Book updateBook)
+      Book updateBook,
+      String token)
     {
       this();
       this.updateBook = updateBook;
+      this.token = token;
     }
 
     /**
@@ -2953,6 +3074,9 @@ public class BookService {
     public update_args(update_args other) {
       if (other.isSetUpdateBook()) {
         this.updateBook = new Book(other.updateBook);
+      }
+      if (other.isSetToken()) {
+        this.token = other.token;
       }
     }
 
@@ -2963,6 +3087,7 @@ public class BookService {
     @Override
     public void clear() {
       this.updateBook = null;
+      this.token = null;
     }
 
     public Book getUpdateBook() {
@@ -2989,6 +3114,30 @@ public class BookService {
       }
     }
 
+    public String getToken() {
+      return this.token;
+    }
+
+    public update_args setToken(String token) {
+      this.token = token;
+      return this;
+    }
+
+    public void unsetToken() {
+      this.token = null;
+    }
+
+    /** Returns true if field token is set (has been assigned a value) and false otherwise */
+    public boolean isSetToken() {
+      return this.token != null;
+    }
+
+    public void setTokenIsSet(boolean value) {
+      if (!value) {
+        this.token = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case UPDATE_BOOK:
@@ -2999,6 +3148,14 @@ public class BookService {
         }
         break;
 
+      case TOKEN:
+        if (value == null) {
+          unsetToken();
+        } else {
+          setToken((String)value);
+        }
+        break;
+
       }
     }
 
@@ -3006,6 +3163,9 @@ public class BookService {
       switch (field) {
       case UPDATE_BOOK:
         return getUpdateBook();
+
+      case TOKEN:
+        return getToken();
 
       }
       throw new IllegalStateException();
@@ -3020,6 +3180,8 @@ public class BookService {
       switch (field) {
       case UPDATE_BOOK:
         return isSetUpdateBook();
+      case TOKEN:
+        return isSetToken();
       }
       throw new IllegalStateException();
     }
@@ -3043,6 +3205,15 @@ public class BookService {
         if (!(this_present_updateBook && that_present_updateBook))
           return false;
         if (!this.updateBook.equals(that.updateBook))
+          return false;
+      }
+
+      boolean this_present_token = true && this.isSetToken();
+      boolean that_present_token = true && that.isSetToken();
+      if (this_present_token || that_present_token) {
+        if (!(this_present_token && that_present_token))
+          return false;
+        if (!this.token.equals(that.token))
           return false;
       }
 
@@ -3072,6 +3243,16 @@ public class BookService {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetToken()).compareTo(other.isSetToken());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetToken()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.token, other.token);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -3097,6 +3278,14 @@ public class BookService {
         sb.append("null");
       } else {
         sb.append(this.updateBook);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("token:");
+      if (this.token == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.token);
       }
       first = false;
       sb.append(")");
@@ -3154,6 +3343,14 @@ public class BookService {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 2: // TOKEN
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.token = iprot.readString();
+                struct.setTokenIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -3172,6 +3369,11 @@ public class BookService {
         if (struct.updateBook != null) {
           oprot.writeFieldBegin(UPDATE_BOOK_FIELD_DESC);
           struct.updateBook.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.token != null) {
+          oprot.writeFieldBegin(TOKEN_FIELD_DESC);
+          oprot.writeString(struct.token);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -3195,20 +3397,30 @@ public class BookService {
         if (struct.isSetUpdateBook()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetToken()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetUpdateBook()) {
           struct.updateBook.write(oprot);
+        }
+        if (struct.isSetToken()) {
+          oprot.writeString(struct.token);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, update_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
+        BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.updateBook = new Book();
           struct.updateBook.read(iprot);
           struct.setUpdateBookIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.token = iprot.readString();
+          struct.setTokenIsSet(true);
         }
       }
     }
@@ -3573,6 +3785,7 @@ public class BookService {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("remove_args");
 
     private static final org.apache.thrift.protocol.TField ID_BOOK_FIELD_DESC = new org.apache.thrift.protocol.TField("idBook", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("token", org.apache.thrift.protocol.TType.STRING, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -3581,10 +3794,12 @@ public class BookService {
     }
 
     public String idBook; // required
+    public String token; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      ID_BOOK((short)1, "idBook");
+      ID_BOOK((short)1, "idBook"),
+      TOKEN((short)2, "token");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -3601,6 +3816,8 @@ public class BookService {
         switch(fieldId) {
           case 1: // ID_BOOK
             return ID_BOOK;
+          case 2: // TOKEN
+            return TOKEN;
           default:
             return null;
         }
@@ -3646,6 +3863,8 @@ public class BookService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.ID_BOOK, new org.apache.thrift.meta_data.FieldMetaData("idBook", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(remove_args.class, metaDataMap);
     }
@@ -3654,10 +3873,12 @@ public class BookService {
     }
 
     public remove_args(
-      String idBook)
+      String idBook,
+      String token)
     {
       this();
       this.idBook = idBook;
+      this.token = token;
     }
 
     /**
@@ -3666,6 +3887,9 @@ public class BookService {
     public remove_args(remove_args other) {
       if (other.isSetIdBook()) {
         this.idBook = other.idBook;
+      }
+      if (other.isSetToken()) {
+        this.token = other.token;
       }
     }
 
@@ -3676,6 +3900,7 @@ public class BookService {
     @Override
     public void clear() {
       this.idBook = null;
+      this.token = null;
     }
 
     public String getIdBook() {
@@ -3702,6 +3927,30 @@ public class BookService {
       }
     }
 
+    public String getToken() {
+      return this.token;
+    }
+
+    public remove_args setToken(String token) {
+      this.token = token;
+      return this;
+    }
+
+    public void unsetToken() {
+      this.token = null;
+    }
+
+    /** Returns true if field token is set (has been assigned a value) and false otherwise */
+    public boolean isSetToken() {
+      return this.token != null;
+    }
+
+    public void setTokenIsSet(boolean value) {
+      if (!value) {
+        this.token = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case ID_BOOK:
@@ -3712,6 +3961,14 @@ public class BookService {
         }
         break;
 
+      case TOKEN:
+        if (value == null) {
+          unsetToken();
+        } else {
+          setToken((String)value);
+        }
+        break;
+
       }
     }
 
@@ -3719,6 +3976,9 @@ public class BookService {
       switch (field) {
       case ID_BOOK:
         return getIdBook();
+
+      case TOKEN:
+        return getToken();
 
       }
       throw new IllegalStateException();
@@ -3733,6 +3993,8 @@ public class BookService {
       switch (field) {
       case ID_BOOK:
         return isSetIdBook();
+      case TOKEN:
+        return isSetToken();
       }
       throw new IllegalStateException();
     }
@@ -3756,6 +4018,15 @@ public class BookService {
         if (!(this_present_idBook && that_present_idBook))
           return false;
         if (!this.idBook.equals(that.idBook))
+          return false;
+      }
+
+      boolean this_present_token = true && this.isSetToken();
+      boolean that_present_token = true && that.isSetToken();
+      if (this_present_token || that_present_token) {
+        if (!(this_present_token && that_present_token))
+          return false;
+        if (!this.token.equals(that.token))
           return false;
       }
 
@@ -3785,6 +4056,16 @@ public class BookService {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetToken()).compareTo(other.isSetToken());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetToken()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.token, other.token);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -3810,6 +4091,14 @@ public class BookService {
         sb.append("null");
       } else {
         sb.append(this.idBook);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("token:");
+      if (this.token == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.token);
       }
       first = false;
       sb.append(")");
@@ -3863,6 +4152,14 @@ public class BookService {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 2: // TOKEN
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.token = iprot.readString();
+                struct.setTokenIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -3881,6 +4178,11 @@ public class BookService {
         if (struct.idBook != null) {
           oprot.writeFieldBegin(ID_BOOK_FIELD_DESC);
           oprot.writeString(struct.idBook);
+          oprot.writeFieldEnd();
+        }
+        if (struct.token != null) {
+          oprot.writeFieldBegin(TOKEN_FIELD_DESC);
+          oprot.writeString(struct.token);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -3904,19 +4206,29 @@ public class BookService {
         if (struct.isSetIdBook()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetToken()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetIdBook()) {
           oprot.writeString(struct.idBook);
+        }
+        if (struct.isSetToken()) {
+          oprot.writeString(struct.token);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, remove_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
+        BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.idBook = iprot.readString();
           struct.setIdBookIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.token = iprot.readString();
+          struct.setTokenIsSet(true);
         }
       }
     }

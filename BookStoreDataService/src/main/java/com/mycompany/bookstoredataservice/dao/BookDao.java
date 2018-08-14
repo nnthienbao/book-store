@@ -27,7 +27,8 @@ public class BookDao implements BookService.Iface {
         return bookDB.count() + "";
     }
     
-    public boolean add(Book newBook) {
+    @Override
+    public boolean add(Book newBook, String token) {
         DB bookDB = FactoryDb.getDBBookStore();
         String bookId = generateBookId();
         newBook.setId(bookId);
@@ -62,7 +63,7 @@ public class BookDao implements BookService.Iface {
     }
 
     @Override
-    public boolean update(Book updateBook) throws TException {
+    public boolean update(Book updateBook, String token) throws TException {
         DB bookDB = FactoryDb.getDBBookStore();
         byte[] value = bookDB.get(updateBook.id.getBytes());
         if(value == null) throw new BookNotFoundException("Khong tim thay sach");
@@ -71,7 +72,7 @@ public class BookDao implements BookService.Iface {
     }
 
     @Override
-    public boolean remove(String idBook) throws TException {
+    public boolean remove(String idBook, String token) throws TException {
         DB bookDB = FactoryDb.getDBBookStore();
         String value = bookDB.get(idBook);
         if(value == null) throw new BookNotFoundException("Khong tim thay sach");

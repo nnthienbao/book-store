@@ -5,6 +5,7 @@
  */
 package com.mycompany.bookstorebusservice;
 
+import com.mycompany.bookstorebusservice.authenticate.JWTManager;
 import com.mycompany.bookstorethriftshare.User;
 import com.mycompany.bookstorethriftshare.UserService;
 import org.apache.thrift.TException;
@@ -22,13 +23,20 @@ public class UserHandler implements UserService.Iface{
     }
     
     @Override
-    public User getUserByNameAndPassword(String username, String password) throws TException {
-        return client.getUserByNameAndPassword(username, password);
+    public String authenticate(String username, String password) throws TException {
+        User user = client.getUser(username, password);
+        System.out.println(user);
+        return JWTManager.sign(user);
     }
 
     @Override
     public boolean add(User newUser) throws TException {
         return client.add(newUser);
+    }
+
+    @Override
+    public User getUser(String username, String password) throws TException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
