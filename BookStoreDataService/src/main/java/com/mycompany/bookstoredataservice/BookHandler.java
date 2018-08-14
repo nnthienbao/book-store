@@ -17,7 +17,7 @@ import org.apache.thrift.TException;
  *
  * @author cpu02453-local
  */
-public class DaoBookHandler implements BookService.Iface{
+public class BookHandler implements BookService.Iface{
     
     private final BookDaoV2 bookDao = new BookDaoV2();
     

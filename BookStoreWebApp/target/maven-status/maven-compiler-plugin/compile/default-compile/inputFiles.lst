@@ -1,5 +1,7 @@
-/home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/client/Client.java
+/home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/client/BookClient.java
+/home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/client/ClientFactory.java
 /home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/controller/AuthenController.java
+/home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/client/UserClient.java
 /home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/controller/HomeController.java
 /home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/controller/admin/HomeAdminController.java
 /home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/controller/admin/BookAdminController.java

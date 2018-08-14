@@ -5,7 +5,8 @@
  */
 package com.mycompany.bookstorewebapp.controller.admin;
 
-import com.mycompany.bookstorewebapp.client.Client;
+import com.mycompany.bookstorewebapp.client.BookClient;
+import com.mycompany.bookstorewebapp.client.ClientFactory;
 import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeAdminController {
     
     @Autowired
-    private Client client;
+    private ClientFactory clientFactory;
     
     @GetMapping({"", "/", "/index"})
     public String getIndex(Model model) {
         try {
-            model.addAttribute("listBooks", client.getList());            
+            model.addAttribute("listBooks", clientFactory.getBookClient().getList());            
         } catch (TException ex) {
             ex.printStackTrace();
         }

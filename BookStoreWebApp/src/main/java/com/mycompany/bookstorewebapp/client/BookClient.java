@@ -3,45 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.bookstorebusservice;
+package com.mycompany.bookstorewebapp.client;
 
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
 import java.util.List;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TMultiplexedProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
-/**
- *
- * @author cpu02453-local
- */
-public class BusBookHandler implements BookService.Iface{
-    
-    private TTransport transport;
-    private TProtocol protocol;
-    private BookService.Client client;
-    
-    public BusBookHandler() {
-        try {            
-            transport = new TSocket("localhost", 3000);
-            transport.open();
-            
-            protocol = new  TBinaryProtocol(transport);
-            client = new BookService.Client(protocol);                        
+public class BookClient implements BookService.Iface {
 
-        } catch (TTransportException e) {
-            e.printStackTrace();
-        }
+    private final TMultiplexedProtocol mulProtocol;
+    private final BookService.Client client;
+    
+    public BookClient(TProtocol generalProtocol) {
+        mulProtocol = new TMultiplexedProtocol(generalProtocol, "bookService");
+        client = new BookService.Client(mulProtocol);
     }
-
     @Override
     public List<Book> getList() throws TException {
         return client.getList();
-    }     
+    }
 
     @Override
     public Book findById(String id) throws TException {
@@ -63,9 +50,4 @@ public class BusBookHandler implements BookService.Iface{
         return client.remove(idBook);
     }
     
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        transport.close();
-    } 
 }

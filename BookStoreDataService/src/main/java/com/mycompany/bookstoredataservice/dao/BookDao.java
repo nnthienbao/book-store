@@ -23,12 +23,12 @@ import org.apache.thrift.TException;
 public class BookDao implements BookService.Iface {
     
     private String generateBookId() {
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         return bookDB.count() + "";
     }
     
     public boolean add(Book newBook) {
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         String bookId = generateBookId();
         newBook.setId(bookId);
         
@@ -41,7 +41,7 @@ public class BookDao implements BookService.Iface {
     @Override
     public List<Book> getList() throws TException {
         List<Book> listBooks = new ArrayList();
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         List<String> keys = bookDB.match_prefix("", 1000);
         for(String key : keys) {
             byte[] bytesBook = bookDB.get(key.getBytes());
@@ -52,7 +52,7 @@ public class BookDao implements BookService.Iface {
 
     @Override
     public Book findById(String id) throws BookNotFoundException {
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         String value = bookDB.get(id);
         if(value == null) throw new BookNotFoundException("Khong tim thay sach");
         
@@ -63,7 +63,7 @@ public class BookDao implements BookService.Iface {
 
     @Override
     public boolean update(Book updateBook) throws TException {
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         byte[] value = bookDB.get(updateBook.id.getBytes());
         if(value == null) throw new BookNotFoundException("Khong tim thay sach");
         
@@ -72,7 +72,7 @@ public class BookDao implements BookService.Iface {
 
     @Override
     public boolean remove(String idBook) throws TException {
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         String value = bookDB.get(idBook);
         if(value == null) throw new BookNotFoundException("Khong tim thay sach");
         

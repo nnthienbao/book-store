@@ -6,7 +6,8 @@
 package com.mycompany.bookstorewebapp.controller.admin;
 
 import com.mycompany.bookstorethriftshare.Book;
-import com.mycompany.bookstorewebapp.client.Client;
+import com.mycompany.bookstorewebapp.client.BookClient;
+import com.mycompany.bookstorewebapp.client.ClientFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.thrift.TException;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BookAdminController {
     
     @Autowired
-    private Client client;
+    private ClientFactory clientFactory;
     
     @GetMapping("/addbook")
     public String getAddBook(Model model) {
@@ -35,7 +36,7 @@ public class BookAdminController {
     @GetMapping("/updatebook")
     public String getUpdateBook(@RequestParam("id") String id, Model model) {
         try {
-            Book bookUpdate = client.findById(id);
+            Book bookUpdate = clientFactory.getBookClient().findById(id);
             model.addAttribute("bookUpdate", bookUpdate);
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
@@ -46,7 +47,7 @@ public class BookAdminController {
     @PostMapping("/addbook")
     public String postAddBook(@ModelAttribute("newbook") Book newbook, Model model) {
         try {
-            client.add(newbook);            
+            clientFactory.getBookClient().add(newbook);            
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -57,7 +58,7 @@ public class BookAdminController {
     public String postUpdateBook(@ModelAttribute("bookUpdate") Book bookUpdate, Model model) {
         System.out.println(bookUpdate);
         try {
-            client.update(bookUpdate);
+            clientFactory.getBookClient().update(bookUpdate);
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,7 +68,7 @@ public class BookAdminController {
     @PostMapping("/removebook")
     public String postRemoveBook(@RequestParam("idBook") String idBook) {
         try {
-            client.remove(idBook);
+            clientFactory.getBookClient().remove(idBook);
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }

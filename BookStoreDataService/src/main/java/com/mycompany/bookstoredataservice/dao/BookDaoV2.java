@@ -23,7 +23,7 @@ public class BookDaoV2 implements BookService.Iface {
     @Override
     public List<Book> getList() throws TException {
         List<Book> listBooks = new ArrayList();
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         String regex = "book:[[:digit:]]+.name";
         List<String> keyBookNames = bookDB.match_regex(regex, -1);
         System.out.println(keyBookNames);
@@ -48,7 +48,7 @@ public class BookDaoV2 implements BookService.Iface {
 
     @Override
     public Book findById(String bookId) throws TException {
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         String keyBookName = bookId + ".name";
         String keyBookKind = bookId + ".kind";
         String keyBookAuthor = bookId + ".author";
@@ -64,7 +64,7 @@ public class BookDaoV2 implements BookService.Iface {
 
     @Override
     public boolean add(Book newBook) throws TException {
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         String bookId = generateBookId();
         String keyBookName = bookId + ".name";
         String keyBookKind = bookId + ".kind";
@@ -81,7 +81,7 @@ public class BookDaoV2 implements BookService.Iface {
 
     @Override
     public boolean update(Book updateBook) throws TException {
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         String bookId = updateBook.getId();
         String keyBookName = bookId + ".name";
         String keyBookKind = bookId + ".kind";
@@ -98,7 +98,7 @@ public class BookDaoV2 implements BookService.Iface {
 
     @Override
     public boolean remove(String bookId) throws TException {
-        DB bookDB = FactoryDb.getDBBook();
+        DB bookDB = FactoryDb.getDBBookStore();
         String keyBookName = bookId + ".name";
         String keyBookKind = bookId + ".kind";
         String keyBookAuthor = bookId + ".author";

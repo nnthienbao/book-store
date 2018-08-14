@@ -16,7 +16,7 @@ public class FactoryDb {
     
     private static DB _dbBook = null;
     
-    public static DB getDBBook() {
+    public static DB getDBBookStore() {
         if(_dbBook == null) {
             _dbBook = new DB();
             if (!_dbBook.open("book.kch", DB.OWRITER | DB.OCREATE)){

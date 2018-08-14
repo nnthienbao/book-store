@@ -6,7 +6,8 @@
 package com.mycompany.bookstorewebapp.controller;
 
 import com.mycompany.bookstorethriftshare.Book;
-import com.mycompany.bookstorewebapp.client.Client;
+import com.mycompany.bookstorewebapp.client.BookClient;
+import com.mycompany.bookstorewebapp.client.ClientFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.thrift.TException;
@@ -21,12 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BookController {
     
     @Autowired
-    private Client client;
+    private ClientFactory clientFactory;
     
     @RequestMapping("/book")
     public String getBook(@RequestParam(value = "id") String id, Model model) {
         try {
-            Book book = client.findById(id); 
+            Book book = clientFactory.getBookClient().findById(id); 
             model.addAttribute("book", book);
         } catch (TException ex) {
             Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);

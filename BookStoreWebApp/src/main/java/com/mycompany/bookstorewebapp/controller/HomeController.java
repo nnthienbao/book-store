@@ -9,7 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.mycompany.bookstorethriftshare.BookService;
-import com.mycompany.bookstorewebapp.client.Client;
+import com.mycompany.bookstorewebapp.client.BookClient;
+import com.mycompany.bookstorewebapp.client.ClientFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.thrift.TException;
@@ -19,12 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class HomeController {
     
     @Autowired
-    private Client client;
+    private ClientFactory clientFactory;
     
     @GetMapping({"/", "/index"})
     public String listBook(Model model) {
         try {
-            model.addAttribute("listBooks", client.getList());            
+            model.addAttribute("listBooks", clientFactory.getBookClient().getList());            
         } catch (TException ex) {
             ex.printStackTrace();
         }
