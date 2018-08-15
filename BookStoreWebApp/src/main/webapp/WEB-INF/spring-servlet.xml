@@ -24,13 +24,13 @@
 
         <beans:bean id="templateEngine"
               class="org.thymeleaf.spring4.SpringTemplateEngine">
-          <beans:property name="templateResolver" ref="templateResolver" />
-          <!-- Enabling the SpringEL compiler with Spring 4.2.4 or newer can speed up  -->
-          <!-- execution in most scenarios, but might be incompatible with specific    -->
-          <!-- cases when expressions in one template are reused across different data -->
-          <!-- ypes, so this flag is "false" by default for safer backwards            -->
-          <!-- compatibility.                                                          -->
-          <beans:property name="enableSpringELCompiler" value="true" />
+            <beans:property name="additionalDialects">
+                <beans:set>
+                  <beans:bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect"/>
+                </beans:set>
+            </beans:property>
+            <beans:property name="templateResolver" ref="templateResolver" />
+            <beans:property name="enableSpringELCompiler" value="true" />
         </beans:bean>
         
         <beans:bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
