@@ -7,6 +7,7 @@ package com.mycompany.bookstoredataservice.dao;
 
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,13 +34,17 @@ public class BookDaoV2 implements BookService.Iface {
             String keyBookKind = bookId + ".kind";
             String keyBookAuthor = bookId + ".author";
             String keyBookPrice = bookId + ".price";
+            String keyBookImage = bookId + ".image";
+            String keyBookExtImage = bookId + ".extImage";
             
             String bookName = bookDB.get(keyBookName);
             String bookKind = bookDB.get(keyBookKind);
             String bookAuthor = bookDB.get(keyBookAuthor);
             int bookPrice = Integer.parseInt(bookDB.get(keyBookPrice));
+            String bookImage = bookDB.get(keyBookImage);
+            String extImage = bookDB.get(keyBookExtImage);
             
-            Book book = new Book(bookId, bookName, bookKind, bookAuthor, bookPrice);
+            Book book = new Book(bookId, bookName, bookKind, bookAuthor, bookPrice, bookImage, extImage);
             
             listBooks.add(book);
         }
@@ -53,13 +58,17 @@ public class BookDaoV2 implements BookService.Iface {
         String keyBookKind = bookId + ".kind";
         String keyBookAuthor = bookId + ".author";
         String keyBookPrice = bookId + ".price";
+        String keyBookImage = bookId + ".image";
+        String keyBookExtImage = bookId + ".extImage";
         
         String bookName = bookDB.get(keyBookName);
         String bookKind = bookDB.get(keyBookKind);
         String bookAuthor = bookDB.get(keyBookAuthor);
         int bookPrice = Integer.parseInt(bookDB.get(keyBookPrice));
+        String bookImage = bookDB.get(keyBookImage);
+        String extImage = bookDB.get(keyBookExtImage);
         
-        return new Book(bookId, bookName, bookKind, bookAuthor, bookPrice);
+        return new Book(bookId, bookName, bookKind, bookAuthor, bookPrice, bookImage, extImage);
     }
 
     @Override
@@ -70,11 +79,15 @@ public class BookDaoV2 implements BookService.Iface {
         String keyBookKind = bookId + ".kind";
         String keyBookAuthor = bookId + ".author";
         String keyBookPrice = bookId + ".price";
+        String keyBookImage = bookId + ".image";
+        String keyBookExtImage = bookId + ".extImage";
         
         bookDB.add(keyBookName, newBook.getName());
         bookDB.add(keyBookKind, newBook.getKind());
         bookDB.add(keyBookAuthor, newBook.getAuthor());
         bookDB.add(keyBookPrice, newBook.getPrice() + "");
+        bookDB.add(keyBookImage, newBook.getImage());
+        bookDB.add(keyBookExtImage, newBook.getExtImage());
         
         return true;
     }

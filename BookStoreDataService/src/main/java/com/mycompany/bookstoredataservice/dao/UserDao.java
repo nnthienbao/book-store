@@ -20,7 +20,7 @@ public class UserDao implements UserService.Iface{
     }
 
     @Override
-    public boolean add(User newUser) throws TException {
+    public boolean add(User newUser) throws UserExistedException {
         DB db = FactoryDb.getDBBookStore();
         String keyUserPassword = "user:" + newUser.username + ".password";
         if(db.check(keyUserPassword) != -1) {

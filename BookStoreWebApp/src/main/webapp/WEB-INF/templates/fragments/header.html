@@ -28,7 +28,6 @@
 							<ul class="dropdown-menu drp-mnu">
                                                                 <div sec:authorize="isAuthenticated()">
                                                                     <form id="logout-form" th:action="@{/logout}" method="post">
-                                                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                                                     </form>
                                                                     <li><a onclick="document.getElementById('logout-form').submit();" href="#">Đăng xuất</a></li>
                                                                 </div>

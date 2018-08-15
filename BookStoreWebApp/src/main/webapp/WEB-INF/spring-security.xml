@@ -12,15 +12,15 @@
                     authentication-failure-url="/login?error" 
                     username-parameter="username"
                     password-parameter="password" />
-                <csrf/>
 		<logout logout-url="/logout" logout-success-url="/login" />
+                <csrf disabled="true"/>
 	</http>
         
         <beans:bean name="clientFactory" class="com.mycompany.bookstorewebapp.client.ClientFactory"></beans:bean>
                 
         <beans:bean name="customAuthenticationProvider" class="com.mycompany.bookstorewebapp.authenticate.CustomAuthenticationProvider">
             <beans:property name="clientFactory" ref="clientFactory"/>
-        </beans:bean>
+        </beans:bean>        
 
 	<authentication-manager>
             <authentication-provider ref="customAuthenticationProvider" />

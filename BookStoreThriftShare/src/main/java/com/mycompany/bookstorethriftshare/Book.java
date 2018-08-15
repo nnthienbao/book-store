@@ -40,6 +40,8 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
   private static final org.apache.thrift.protocol.TField KIND_FIELD_DESC = new org.apache.thrift.protocol.TField("kind", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField AUTHOR_FIELD_DESC = new org.apache.thrift.protocol.TField("author", org.apache.thrift.protocol.TType.STRING, (short)4);
   private static final org.apache.thrift.protocol.TField PRICE_FIELD_DESC = new org.apache.thrift.protocol.TField("price", org.apache.thrift.protocol.TType.I32, (short)5);
+  private static final org.apache.thrift.protocol.TField IMAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("image", org.apache.thrift.protocol.TType.STRING, (short)6);
+  private static final org.apache.thrift.protocol.TField EXT_IMAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("extImage", org.apache.thrift.protocol.TType.STRING, (short)7);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -52,6 +54,8 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
   public String kind; // required
   public String author; // required
   public int price; // required
+  public String image; // required
+  public String extImage; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -59,7 +63,9 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
     NAME((short)2, "name"),
     KIND((short)3, "kind"),
     AUTHOR((short)4, "author"),
-    PRICE((short)5, "price");
+    PRICE((short)5, "price"),
+    IMAGE((short)6, "image"),
+    EXT_IMAGE((short)7, "extImage");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -84,6 +90,10 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
           return AUTHOR;
         case 5: // PRICE
           return PRICE;
+        case 6: // IMAGE
+          return IMAGE;
+        case 7: // EXT_IMAGE
+          return EXT_IMAGE;
         default:
           return null;
       }
@@ -139,6 +149,10 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.PRICE, new org.apache.thrift.meta_data.FieldMetaData("price", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.IMAGE, new org.apache.thrift.meta_data.FieldMetaData("image", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.EXT_IMAGE, new org.apache.thrift.meta_data.FieldMetaData("extImage", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Book.class, metaDataMap);
   }
@@ -151,7 +165,9 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
     String name,
     String kind,
     String author,
-    int price)
+    int price,
+    String image,
+    String extImage)
   {
     this();
     this.id = id;
@@ -160,6 +176,8 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
     this.author = author;
     this.price = price;
     setPriceIsSet(true);
+    this.image = image;
+    this.extImage = extImage;
   }
 
   /**
@@ -180,6 +198,12 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       this.author = other.author;
     }
     this.price = other.price;
+    if (other.isSetImage()) {
+      this.image = other.image;
+    }
+    if (other.isSetExtImage()) {
+      this.extImage = other.extImage;
+    }
   }
 
   public Book deepCopy() {
@@ -194,6 +218,8 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
     this.author = null;
     setPriceIsSet(false);
     this.price = 0;
+    this.image = null;
+    this.extImage = null;
   }
 
   public String getId() {
@@ -315,6 +341,54 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PRICE_ISSET_ID, value);
   }
 
+  public String getImage() {
+    return this.image;
+  }
+
+  public Book setImage(String image) {
+    this.image = image;
+    return this;
+  }
+
+  public void unsetImage() {
+    this.image = null;
+  }
+
+  /** Returns true if field image is set (has been assigned a value) and false otherwise */
+  public boolean isSetImage() {
+    return this.image != null;
+  }
+
+  public void setImageIsSet(boolean value) {
+    if (!value) {
+      this.image = null;
+    }
+  }
+
+  public String getExtImage() {
+    return this.extImage;
+  }
+
+  public Book setExtImage(String extImage) {
+    this.extImage = extImage;
+    return this;
+  }
+
+  public void unsetExtImage() {
+    this.extImage = null;
+  }
+
+  /** Returns true if field extImage is set (has been assigned a value) and false otherwise */
+  public boolean isSetExtImage() {
+    return this.extImage != null;
+  }
+
+  public void setExtImageIsSet(boolean value) {
+    if (!value) {
+      this.extImage = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case ID:
@@ -357,6 +431,22 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       }
       break;
 
+    case IMAGE:
+      if (value == null) {
+        unsetImage();
+      } else {
+        setImage((String)value);
+      }
+      break;
+
+    case EXT_IMAGE:
+      if (value == null) {
+        unsetExtImage();
+      } else {
+        setExtImage((String)value);
+      }
+      break;
+
     }
   }
 
@@ -376,6 +466,12 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
 
     case PRICE:
       return Integer.valueOf(getPrice());
+
+    case IMAGE:
+      return getImage();
+
+    case EXT_IMAGE:
+      return getExtImage();
 
     }
     throw new IllegalStateException();
@@ -398,6 +494,10 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       return isSetAuthor();
     case PRICE:
       return isSetPrice();
+    case IMAGE:
+      return isSetImage();
+    case EXT_IMAGE:
+      return isSetExtImage();
     }
     throw new IllegalStateException();
   }
@@ -457,6 +557,24 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       if (!(this_present_price && that_present_price))
         return false;
       if (this.price != that.price)
+        return false;
+    }
+
+    boolean this_present_image = true && this.isSetImage();
+    boolean that_present_image = true && that.isSetImage();
+    if (this_present_image || that_present_image) {
+      if (!(this_present_image && that_present_image))
+        return false;
+      if (!this.image.equals(that.image))
+        return false;
+    }
+
+    boolean this_present_extImage = true && this.isSetExtImage();
+    boolean that_present_extImage = true && that.isSetExtImage();
+    if (this_present_extImage || that_present_extImage) {
+      if (!(this_present_extImage && that_present_extImage))
+        return false;
+      if (!this.extImage.equals(that.extImage))
         return false;
     }
 
@@ -526,6 +644,26 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetImage()).compareTo(other.isSetImage());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetImage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.image, other.image);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetExtImage()).compareTo(other.isSetExtImage());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetExtImage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.extImage, other.extImage);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -580,6 +718,22 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
     if (!first) sb.append(", ");
     sb.append("price:");
     sb.append(this.price);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("image:");
+    if (this.image == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.image);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("extImage:");
+    if (this.extImage == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.extImage);
+    }
     first = false;
     sb.append(")");
     return sb.toString();
@@ -666,6 +820,22 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 6: // IMAGE
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.image = iprot.readString();
+              struct.setImageIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 7: // EXT_IMAGE
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.extImage = iprot.readString();
+              struct.setExtImageIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -704,6 +874,16 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       oprot.writeFieldBegin(PRICE_FIELD_DESC);
       oprot.writeI32(struct.price);
       oprot.writeFieldEnd();
+      if (struct.image != null) {
+        oprot.writeFieldBegin(IMAGE_FIELD_DESC);
+        oprot.writeString(struct.image);
+        oprot.writeFieldEnd();
+      }
+      if (struct.extImage != null) {
+        oprot.writeFieldBegin(EXT_IMAGE_FIELD_DESC);
+        oprot.writeString(struct.extImage);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -737,7 +917,13 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       if (struct.isSetPrice()) {
         optionals.set(4);
       }
-      oprot.writeBitSet(optionals, 5);
+      if (struct.isSetImage()) {
+        optionals.set(5);
+      }
+      if (struct.isSetExtImage()) {
+        optionals.set(6);
+      }
+      oprot.writeBitSet(optionals, 7);
       if (struct.isSetId()) {
         oprot.writeString(struct.id);
       }
@@ -753,12 +939,18 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       if (struct.isSetPrice()) {
         oprot.writeI32(struct.price);
       }
+      if (struct.isSetImage()) {
+        oprot.writeString(struct.image);
+      }
+      if (struct.isSetExtImage()) {
+        oprot.writeString(struct.extImage);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, Book struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(5);
+      BitSet incoming = iprot.readBitSet(7);
       if (incoming.get(0)) {
         struct.id = iprot.readString();
         struct.setIdIsSet(true);
@@ -778,6 +970,14 @@ public class Book implements org.apache.thrift.TBase<Book, Book._Fields>, java.i
       if (incoming.get(4)) {
         struct.price = iprot.readI32();
         struct.setPriceIsSet(true);
+      }
+      if (incoming.get(5)) {
+        struct.image = iprot.readString();
+        struct.setImageIsSet(true);
+      }
+      if (incoming.get(6)) {
+        struct.extImage = iprot.readString();
+        struct.setExtImageIsSet(true);
       }
     }
   }

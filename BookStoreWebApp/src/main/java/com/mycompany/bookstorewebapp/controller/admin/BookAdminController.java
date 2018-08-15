@@ -8,8 +8,11 @@ package com.mycompany.bookstorewebapp.controller.admin;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorewebapp.authenticate.UserInfo;
 import com.mycompany.bookstorewebapp.client.ClientFactory;
+import com.mycompany.bookstorewebapp.utils.Utils;
+import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/admin")
@@ -46,12 +50,15 @@ public class BookAdminController {
     }
     
     @PostMapping("/addbook")
-    public String postAddBook(@ModelAttribute("newbook") Book newbook, Model model) {
+    public String postAddBook(@ModelAttribute("newbook") Book newbook, @RequestParam("anhBia") MultipartFile anhBia, Model model) {
         UserInfo userInfo = (UserInfo)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(userInfo.getToken());
         try {
-            clientFactory.getBookClient().add(newbook, userInfo.getToken());            
-        } catch (TException ex) {
+            newbook.setImage(Utils.toBase64(anhBia.getBytes()));
+            String extFileName = FilenameUtils.getExtension(anhBia.getOriginalFilename());
+            newbook.setExtImage(extFileName);
+            clientFactory.getBookClient().add(newbook, userInfo.getToken());       
+        } catch (Exception ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "redirect:/admin/addbook";

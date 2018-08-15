@@ -31,7 +31,7 @@ public class Test {
             UserService.Client userClient = new UserService.Client(mulProtocol);
             
             //System.out.println(userClient.add(new User("nnthienbao", "123456", "ROLE_ADMIN")));
-            System.out.println(userClient.authenticate("nnthienbao", "123456"));
+            System.out.println(userClient.getUser("nnthienbao", "123456"));
             
             transport.close();
         } catch (Exception e) {

@@ -5,7 +5,9 @@ struct Book {
     2:string name;
     3:string kind;
     4:string author;
-    5:i32 price
+    5:i32 price;
+    6:string image;
+    7:string extImage
 }
 
 exception BookNotFoundException {

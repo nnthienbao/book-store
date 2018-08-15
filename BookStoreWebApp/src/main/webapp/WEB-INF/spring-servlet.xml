@@ -10,6 +10,11 @@
 	<annotation-driven />
 	<context:component-scan base-package="com.mycompany.bookstorewebapp" />       
         
+        <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+            <beans:property name="maxUploadSizePerFile" value="1000000"/>
+            <beans:property name="defaultEncoding" value="utf-8"></beans:property>
+        </beans:bean>
+        
         <beans:bean id="templateResolver"
                class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
           <beans:property name="prefix" value="/WEB-INF/templates/" />

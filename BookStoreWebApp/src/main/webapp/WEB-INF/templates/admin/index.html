@@ -63,7 +63,7 @@
 									<td class="text-center">[[${book.kind}]]</td>
 									<td class="text-center">[[${book.author}]]</td>
 									<td class="text-center">[[${book.price}]] VNĐ</td>
-									<td><img class="image-product center-item" th:src="@{/static/images/sherlock-homes.jpg}" /></td>
+									<td><img class="image-product center-item" th:src="*{'data:image/'+book.extImage+';base64,'+book.image}" alt="anhbia" /></td>
 									<td>
 										<div class="center-item tool-product">
 											<div class="form-group">
