@@ -65,11 +65,14 @@ public class BookAdminController {
     }
     
     @PostMapping("/updatebook")
-    public String postUpdateBook(@ModelAttribute("bookUpdate") Book bookUpdate, Model model) {
+    public String postUpdateBook(@ModelAttribute("bookUpdate") Book bookUpdate, @RequestParam("anhBia") MultipartFile anhBia, Model model) {
         UserInfo userInfo = (UserInfo)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
+            bookUpdate.setImage(Utils.toBase64(anhBia.getBytes()));
+            String extFileName = FilenameUtils.getExtension(anhBia.getOriginalFilename());
+            bookUpdate.setExtImage(extFileName);
             clientFactory.getBookClient().update(bookUpdate, userInfo.getToken());
-        } catch (TException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "redirect:/admin/updatebook?id=" + bookUpdate.getId();

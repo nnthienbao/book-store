@@ -44,7 +44,7 @@
                                     <h3 class="panel-title">Thêm sách</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <form th:action="@{/admin/updatebook}" th:object="${bookUpdate}" method="post" class="form-horizontal">
+                                    <form enctype="multipart/form-data" th:action="@{/admin/updatebook}" th:object="${bookUpdate}" method="post" class="form-horizontal">
                                         <div class="form-group">
                                             <label for="idSach" class="col-sm-2 control-label">Mã sách</label>
                                             <div class="col-sm-10">
@@ -81,7 +81,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-btn">
                                                         <span class="btn btn-default btn-file">
-                                                            Browse… <input type="file" accept="image/png, image/jpeg, image/gif" id="imgInp">
+                                                            Browse… <input type="file" name="anhBia" id="anhBia" accept="image/png, image/jpeg, image/gif">
                                                         </span>
                                                     </span>
                                                     <input id='inputAnhBia' type="text" class="form-control" readonly>

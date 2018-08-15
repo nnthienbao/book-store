@@ -100,11 +100,15 @@ public class BookDaoV2 implements BookService.Iface {
         String keyBookKind = bookId + ".kind";
         String keyBookAuthor = bookId + ".author";
         String keyBookPrice = bookId + ".price";
+        String keyBookImage = bookId + ".image";
+        String keyBookExtImage = bookId + ".extImage";
         
         bookDB.replace(keyBookName, updateBook.getName());
         bookDB.replace(keyBookKind, updateBook.getKind());
         bookDB.replace(keyBookAuthor, updateBook.getAuthor());
         bookDB.replace(keyBookPrice, updateBook.getPrice() + "");
+        bookDB.replace(keyBookImage, updateBook.getImage());
+        bookDB.replace(keyBookExtImage, updateBook.getExtImage());
         
         return true;
     }
