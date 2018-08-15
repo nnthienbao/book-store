@@ -9,7 +9,6 @@ import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorewebapp.authenticate.UserInfo;
 import com.mycompany.bookstorewebapp.client.ClientFactory;
 import com.mycompany.bookstorewebapp.utils.Utils;
-import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;

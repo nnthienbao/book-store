@@ -54,7 +54,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                                 <figure>
                                                         <div class="snipcart-item block">
                                                                 <div class="snipcart-thumb">
-                                                                        <a th:href="@{/book.html(id=${book.id})}"><img th:src="@{/static/images/sherlock-homes.jpg}" alt=" " class="img-responsive" /></a>
+                                                                        <a th:href="@{/book.html(id=${book.id})}"><img th:src="*{'data:image/'+book.extImage+';base64,'+book.image}" alt="anhBia" class="img-responsive" /></a>
                                                                         <p><strong th:text="${book.name}"></strong></p>
                                                                         <p th:text="${book.author}"></p>
                                                                         <p th:text="${book.kind}"></p>

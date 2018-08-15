@@ -5,6 +5,7 @@
  */
 package com.mycompany.bookstoredataservice;
 
+import com.mycompany.bookstoredataservice.dao.BookDao;
 import com.mycompany.bookstoredataservice.dao.BookDaoV2;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
@@ -17,7 +18,7 @@ import org.apache.thrift.TException;
  */
 public class BookHandler implements BookService.Iface{
     
-    private final BookDaoV2 bookDao = new BookDaoV2();
+    private final BookDao bookDao = new BookDao();
     
     @Override
     public List<Book> getList() throws TException {

@@ -5,6 +5,7 @@
  */
 package com.mycompany.bookstoredataservice.dao;
 
+import com.mycompany.bookstoredataservice.utils.Utils;
 import com.mycompany.bookstorethriftshare.User;
 import com.mycompany.bookstorethriftshare.UserExistedException;
 import com.mycompany.bookstorethriftshare.UserNotFoundException;
@@ -22,14 +23,11 @@ public class UserDao implements UserService.Iface{
     @Override
     public boolean add(User newUser) throws UserExistedException {
         DB db = FactoryDb.getDBBookStore();
-        String keyUserPassword = "user:" + newUser.username + ".password";
-        if(db.check(keyUserPassword) != -1) {
+        if(db.check(newUser.getUsername()) != -1) {
             UserExistedException ex = new UserExistedException("Da ton tai user", 100);
             throw ex;
         }
-        String keyUserRole = "user:" + newUser.username + ".role";
-        db.add(keyUserPassword, newUser.password);
-        db.add(keyUserRole, newUser.role);
+        db.add(newUser.getUsername().getBytes(), Utils.toByte(newUser));
         
         return true;
     }
@@ -37,16 +35,11 @@ public class UserDao implements UserService.Iface{
     @Override
     public User getUser(String username, String password) throws UserNotFoundException {
         DB db = FactoryDb.getDBBookStore();
-        String keyUserPassword = "user:" + username + ".password";
-        String valueUserPassword = db.get(keyUserPassword);
-        if(valueUserPassword == null || !password.equals(valueUserPassword)) {
-            UserNotFoundException ex = new UserNotFoundException("Khong tim thay user", 101);
-            throw ex;
-        }
-        String keyUserRole = "user:" + username + ".role";
-        String valueUserRole = db.get(keyUserRole);
+
+        byte[] bytes = db.get(username.getBytes());
+        if(bytes == null) throw new UserNotFoundException("Khong tim thay user", 101);
         
-        return new User(username, password, valueUserRole);
+        return (User) Utils.toObject(bytes);
     }
     
 }
