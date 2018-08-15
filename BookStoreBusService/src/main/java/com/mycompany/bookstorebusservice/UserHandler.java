@@ -24,9 +24,11 @@ public class UserHandler implements UserService.Iface{
     
     @Override
     public String authenticate(String username, String password) throws TException {
-        User user = client.getUser(username, password);
+        User user = client.getUser(username, password);        
         System.out.println(user);
-        return JWTManager.sign(user);
+        String token = JWTManager.sign(user);
+        System.out.println(token);
+        return token;
     }
 
     @Override

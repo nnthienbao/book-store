@@ -5,19 +5,25 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
-
 	<http auto-config="true">
-		<intercept-url pattern="/admin*" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
                 <form-login 
 		    login-page="/login" 
                     authentication-failure-url="/login?error" 
                     username-parameter="username"
                     password-parameter="password" />
-		<logout logout-success-url="/login?logout" />
+                <csrf/>
+		<logout logout-url="/logout" logout-success-url="/login" />
 	</http>
+        
+        <beans:bean name="clientFactory" class="com.mycompany.bookstorewebapp.client.ClientFactory"></beans:bean>
+                
+        <beans:bean name="customAuthenticationProvider" class="com.mycompany.bookstorewebapp.authenticate.CustomAuthenticationProvider">
+            <beans:property name="clientFactory" ref="clientFactory"/>
+        </beans:bean>
 
-	<user-service>
-		<user name="bao" password="123456" authorities="ROLE_ADMIN" />
-	</user-service>
+	<authentication-manager>
+            <authentication-provider ref="customAuthenticationProvider" />
+        </authentication-manager>
 
 </beans:beans>

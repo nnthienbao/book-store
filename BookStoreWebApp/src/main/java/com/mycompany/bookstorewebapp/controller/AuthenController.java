@@ -6,7 +6,6 @@
 package com.mycompany.bookstorewebapp.controller;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.mycompany.bookstorethriftshare.User;
 import com.mycompany.bookstorewebapp.client.ClientFactory;
 import com.mycompany.bookstorewebapp.utils.JWTManager;
 import java.util.logging.Level;
@@ -30,21 +29,21 @@ public class AuthenController {
         return "login";
     }
     
-    @PostMapping("/login")
-    public String postLogin(@RequestParam("username") String username, 
-            @RequestParam("password") String password,
-            HttpServletRequest request) {
-        try {
-            String token = clientFactory.getUserClient().authenticate(username, password);
-            DecodedJWT decode = JWTManager.decode(token);
-            String role = decode.getClaim("role").asString();
-            request.getSession().setAttribute("username", username);
-            request.getSession().setAttribute("role", role);
-            request.getSession().setAttribute("token", token);
-            return "redirect:/admin";
-        } catch (TException ex) {
-            Logger.getLogger(AuthenController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "redirect:/login";
-    }
+//    @PostMapping("/login")
+//    public String postLogin(@RequestParam("username") String username, 
+//            @RequestParam("password") String password,
+//            HttpServletRequest request) {
+//        try {
+//            String token = clientFactory.getUserClient().authenticate(username, password);
+//            DecodedJWT decode = JWTManager.decode(token);
+//            String role = decode.getClaim("role").asString();
+//            request.getSession().setAttribute("username", username);
+//            request.getSession().setAttribute("role", role);
+//            request.getSession().setAttribute("token", token);
+//            return "redirect:/admin";
+//        } catch (TException ex) {
+//            Logger.getLogger(AuthenController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return "redirect:/login";
+//    }
 }

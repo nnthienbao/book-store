@@ -6,11 +6,13 @@
 package com.mycompany.bookstorewebapp.controller.admin;
 
 import com.mycompany.bookstorethriftshare.Book;
+import com.mycompany.bookstorewebapp.authenticate.UserInfo;
 import com.mycompany.bookstorewebapp.client.ClientFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,8 +47,10 @@ public class BookAdminController {
     
     @PostMapping("/addbook")
     public String postAddBook(@ModelAttribute("newbook") Book newbook, Model model) {
+        UserInfo userInfo = (UserInfo)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(userInfo.getToken());
         try {
-            clientFactory.getBookClient().add(newbook, "");            
+            clientFactory.getBookClient().add(newbook, userInfo.getToken());            
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -55,9 +59,9 @@ public class BookAdminController {
     
     @PostMapping("/updatebook")
     public String postUpdateBook(@ModelAttribute("bookUpdate") Book bookUpdate, Model model) {
-        System.out.println(bookUpdate);
+        UserInfo userInfo = (UserInfo)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
-            clientFactory.getBookClient().update(bookUpdate, "");
+            clientFactory.getBookClient().update(bookUpdate, userInfo.getToken());
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,8 +70,9 @@ public class BookAdminController {
     
     @PostMapping("/removebook")
     public String postRemoveBook(@RequestParam("idBook") String idBook) {
+        UserInfo userInfo = (UserInfo)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
-            clientFactory.getBookClient().remove(idBook, "");
+            clientFactory.getBookClient().remove(idBook, userInfo.getToken());
         } catch (TException ex) {
             Logger.getLogger(BookAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }

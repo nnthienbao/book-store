@@ -7,6 +7,7 @@ package com.mycompany.bookstorebusservice.authenticate;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.mycompany.bookstorethriftshare.User;
 
 public class JWTManager {
@@ -23,5 +24,9 @@ public class JWTManager {
     
     public static boolean verify(String token) {
         return true;
+    }
+    
+    public static DecodedJWT decode(String token) {
+        return JWT.decode(token);
     }
 }

@@ -15,6 +15,8 @@ import org.apache.thrift.transport.TTransportException;
 public class ClientFactory {
     private TTransport transport;
     private TProtocol clientProtocol;
+    private UserClient userClient = null;
+    private BookClient bookClient = null;
     
     public ClientFactory() {
         try {            
@@ -22,18 +24,20 @@ public class ClientFactory {
             transport.open();
             
             clientProtocol = new  TBinaryProtocol(transport);                     
-
+            
+            userClient = new UserClient(clientProtocol);
+            bookClient = new BookClient(clientProtocol);
         } catch (TTransportException e) {
             e.printStackTrace();
         }
     }
     
     public BookClient getBookClient() {
-        return new BookClient(clientProtocol);
+        return bookClient;
     }
     
     public UserClient getUserClient() {
-        return new UserClient(clientProtocol);
+        return userClient;
     }
 
     @Override
