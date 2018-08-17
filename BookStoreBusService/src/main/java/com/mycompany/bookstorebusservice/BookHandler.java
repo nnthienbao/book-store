@@ -9,6 +9,7 @@ import com.mycompany.bookstorebusservice.authenticate.JWTManager;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
 import com.mycompany.bookstorethriftshare.PermissionDeniedException;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TMultiplexedProtocol;
@@ -67,7 +68,12 @@ public class BookHandler implements BookService.Iface{
     }
 
 	@Override
-	public List<Book> searchByKeyword(String keyword) throws TException {
-		return client.searchByKeyword(keyword);
+	public List<Book> searchByKeyword(String keyword) {
+		try {
+			return client.searchByKeyword(keyword);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
 	}
 }

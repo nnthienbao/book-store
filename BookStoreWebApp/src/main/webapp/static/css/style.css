@@ -107,7 +107,7 @@ input[type="submit"],#PPMiniCart .minicart-submit,.w3ls_vegetables ul li a,input
     border: 1px solid #999;
     float: left;
 }
-.w3l_search input[type="submit"]{
+.w3l_search input[type="button"]{
 	outline: none;
     padding: 10px 0 9px;
     width: 15%;

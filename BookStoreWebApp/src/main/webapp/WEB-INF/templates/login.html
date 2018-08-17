@@ -18,9 +18,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- //font-awesome icons -->
 <!-- js -->
 <script th:src="@{/static/js/jquery-1.11.1.min.js}"></script>
+<script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
 <!-- //js -->
 <link href='//fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+<link href="https://code.jquery.com/ui/jquery-ui-git.css" rel='stylesheet' type='text/css'>
 <!-- start-smoth-scrolling -->
 <script type="text/javascript" th:src="@{/static/js/move-top.js}"></script>
 <script type="text/javascript" src="@{/static/js/easing.js}"></script>
@@ -70,7 +72,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div th:replace="fragments/footer :: footer"></div>
 <!-- //footer -->
 <!-- Bootstrap Core JavaScript -->
-<script src="js/bootstrap.min.js"></script>
+<script th:src="@{/static/js/bootstrap.min.js}"></script>
 <script>
 $(document).ready(function(){
     $(".dropdown").hover(            
@@ -124,5 +126,6 @@ $(document).ready(function(){
 		});
 
 	</script>
+	<script th:src="@{/static/js/myscript.js}"></script>
 </body>
 </html>

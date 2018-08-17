@@ -7,8 +7,8 @@
 	<div class="agileits_header">
 		<div class="w3l_search">
 			<form action="#" method="post">
-				<input type="text" name="Product" value="Tìm kiếm..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Tìm kiếm...';}" required="">
-				<input type="submit" value=" ">
+				<input type="text" name="Product" id="inputSearch" value="Tìm kiếm..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Tìm kiếm...';}" required="">
+				<input type="button" id="buttonSearch" value=" ">
 			</form>
 		</div>
 		<div class="product_list_header">  
@@ -26,14 +26,14 @@
 					<div class="mega-dropdown-menu">
 						<div class="w3ls_vegetables">
 							<ul class="dropdown-menu drp-mnu">
-                                                                <div sec:authorize="isAuthenticated()">
-                                                                    <form id="logout-form" th:action="@{/logout}" method="post">
-                                                                    </form>
-                                                                    <li><a onclick="document.getElementById('logout-form').submit();" href="#">Đăng xuất</a></li>
-                                                                </div>
-                                                                <div sec:authorize="!isAuthenticated()">
-                                                                    <li><a th:href="@{/login.html}">Đăng nhập</a></li>
-                                                                </div>  								
+								<div sec:authorize="isAuthenticated()">
+									<form id="logout-form" th:action="@{/logout}" method="post">
+									</form>
+									<li><a onclick="document.getElementById('logout-form').submit();" href="#">Đăng xuất</a></li>
+								</div>
+								<div sec:authorize="!isAuthenticated()">
+									<li><a th:href="@{/login.html}">Đăng nhập</a></li>
+								</div>  								
 							</ul>
 						</div>                  
 					</div>	
