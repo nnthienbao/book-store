@@ -64,10 +64,17 @@ public class BookDao implements BookService.Iface {
 	@Override
 	public boolean update(Book updateBook, String token) throws TException {
 		DB bookDB = FactoryDb.getDBBookStore();
-		byte[] value = bookDB.get(updateBook.id.getBytes());
-		if (value == null) {
+		byte[] bytes = bookDB.get(updateBook.id.getBytes());
+		
+		if (bytes == null) {
 			throw new BookNotFoundException("Khong tim thay sach");
 		}
+		
+		if(updateBook.getImage().isEmpty() || updateBook.getImage() == null) {
+			Book oldBook = (Book) Utils.toObject(bytes);
+			updateBook.setImage(oldBook.getImage());
+			updateBook.setExtImage(oldBook.getExtImage());
+		}		
 
 		return bookDB.replace(updateBook.id.getBytes(), Utils.toByte(updateBook));
 	}
