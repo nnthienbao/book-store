@@ -65,4 +65,9 @@ public class BookHandler implements BookService.Iface{
         if(!role.equals("ROLE_ADMIN")) return false;
         return true;
     }
+
+	@Override
+	public List<Book> searchByKeyword(String keyword) throws TException {
+		return client.searchByKeyword(keyword);
+	}
 }

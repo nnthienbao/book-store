@@ -49,5 +49,10 @@ public class BookClient implements BookService.Iface {
     public boolean remove(String idBook, String token) throws TException {
         return client.remove(idBook, token);
     }
+
+	@Override
+	public List<Book> searchByKeyword(String keyword) throws TException {
+		return client.searchByKeyword(keyword);
+	}
     
 }

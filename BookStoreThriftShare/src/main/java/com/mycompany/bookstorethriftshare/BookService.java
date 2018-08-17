@@ -46,6 +46,8 @@ public class BookService {
 
     public boolean remove(String idBook, String token) throws PermissionDeniedException, org.apache.thrift.TException;
 
+    public List<Book> searchByKeyword(String keyword) throws org.apache.thrift.TException;
+
   }
 
   public interface AsyncIface {
@@ -59,6 +61,8 @@ public class BookService {
     public void update(Book updateBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
     public void remove(String idBook, String token, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+
+    public void searchByKeyword(String keyword, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -206,6 +210,29 @@ public class BookService {
         throw result.ex;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "remove failed: unknown result");
+    }
+
+    public List<Book> searchByKeyword(String keyword) throws org.apache.thrift.TException
+    {
+      send_searchByKeyword(keyword);
+      return recv_searchByKeyword();
+    }
+
+    public void send_searchByKeyword(String keyword) throws org.apache.thrift.TException
+    {
+      searchByKeyword_args args = new searchByKeyword_args();
+      args.setKeyword(keyword);
+      sendBase("searchByKeyword", args);
+    }
+
+    public List<Book> recv_searchByKeyword() throws org.apache.thrift.TException
+    {
+      searchByKeyword_result result = new searchByKeyword_result();
+      receiveBase(result, "searchByKeyword");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "searchByKeyword failed: unknown result");
     }
 
   }
@@ -392,6 +419,38 @@ public class BookService {
       }
     }
 
+    public void searchByKeyword(String keyword, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      searchByKeyword_call method_call = new searchByKeyword_call(keyword, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class searchByKeyword_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String keyword;
+      public searchByKeyword_call(String keyword, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.keyword = keyword;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("searchByKeyword", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        searchByKeyword_args args = new searchByKeyword_args();
+        args.setKeyword(keyword);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<Book> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_searchByKeyword();
+      }
+    }
+
   }
 
   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
@@ -410,6 +469,7 @@ public class BookService {
       processMap.put("add", new add());
       processMap.put("update", new update());
       processMap.put("remove", new remove());
+      processMap.put("searchByKeyword", new searchByKeyword());
       return processMap;
     }
 
@@ -528,6 +588,26 @@ public class BookService {
       }
     }
 
+    public static class searchByKeyword<I extends Iface> extends org.apache.thrift.ProcessFunction<I, searchByKeyword_args> {
+      public searchByKeyword() {
+        super("searchByKeyword");
+      }
+
+      public searchByKeyword_args getEmptyArgsInstance() {
+        return new searchByKeyword_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public searchByKeyword_result getResult(I iface, searchByKeyword_args args) throws org.apache.thrift.TException {
+        searchByKeyword_result result = new searchByKeyword_result();
+        result.success = iface.searchByKeyword(args.keyword);
+        return result;
+      }
+    }
+
   }
 
   public static class AsyncProcessor<I extends AsyncIface> extends org.apache.thrift.TBaseAsyncProcessor<I> {
@@ -546,6 +626,7 @@ public class BookService {
       processMap.put("add", new add());
       processMap.put("update", new update());
       processMap.put("remove", new remove());
+      processMap.put("searchByKeyword", new searchByKeyword());
       return processMap;
     }
 
@@ -822,6 +903,57 @@ public class BookService {
 
       public void start(I iface, remove_args args, org.apache.thrift.async.AsyncMethodCallback<Boolean> resultHandler) throws TException {
         iface.remove(args.idBook, args.token,resultHandler);
+      }
+    }
+
+    public static class searchByKeyword<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, searchByKeyword_args, List<Book>> {
+      public searchByKeyword() {
+        super("searchByKeyword");
+      }
+
+      public searchByKeyword_args getEmptyArgsInstance() {
+        return new searchByKeyword_args();
+      }
+
+      public AsyncMethodCallback<List<Book>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new AsyncMethodCallback<List<Book>>() { 
+          public void onComplete(List<Book> o) {
+            searchByKeyword_result result = new searchByKeyword_result();
+            result.success = o;
+            try {
+              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+              return;
+            } catch (Exception e) {
+              LOGGER.error("Exception writing to internal frame buffer", e);
+            }
+            fb.close();
+          }
+          public void onError(Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TBase msg;
+            searchByKeyword_result result = new searchByKeyword_result();
+            {
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+              return;
+            } catch (Exception ex) {
+              LOGGER.error("Exception writing to internal frame buffer", ex);
+            }
+            fb.close();
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, searchByKeyword_args args, org.apache.thrift.async.AsyncMethodCallback<List<Book>> resultHandler) throws TException {
+        iface.searchByKeyword(args.keyword,resultHandler);
       }
     }
 
@@ -4928,6 +5060,768 @@ public class BookService {
           struct.ex = new PermissionDeniedException();
           struct.ex.read(iprot);
           struct.setExIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class searchByKeyword_args implements org.apache.thrift.TBase<searchByKeyword_args, searchByKeyword_args._Fields>, java.io.Serializable, Cloneable, Comparable<searchByKeyword_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchByKeyword_args");
+
+    private static final org.apache.thrift.protocol.TField KEYWORD_FIELD_DESC = new org.apache.thrift.protocol.TField("keyword", org.apache.thrift.protocol.TType.STRING, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new searchByKeyword_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new searchByKeyword_argsTupleSchemeFactory());
+    }
+
+    public String keyword; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      KEYWORD((short)1, "keyword");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // KEYWORD
+            return KEYWORD;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.KEYWORD, new org.apache.thrift.meta_data.FieldMetaData("keyword", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchByKeyword_args.class, metaDataMap);
+    }
+
+    public searchByKeyword_args() {
+    }
+
+    public searchByKeyword_args(
+      String keyword)
+    {
+      this();
+      this.keyword = keyword;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public searchByKeyword_args(searchByKeyword_args other) {
+      if (other.isSetKeyword()) {
+        this.keyword = other.keyword;
+      }
+    }
+
+    public searchByKeyword_args deepCopy() {
+      return new searchByKeyword_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.keyword = null;
+    }
+
+    public String getKeyword() {
+      return this.keyword;
+    }
+
+    public searchByKeyword_args setKeyword(String keyword) {
+      this.keyword = keyword;
+      return this;
+    }
+
+    public void unsetKeyword() {
+      this.keyword = null;
+    }
+
+    /** Returns true if field keyword is set (has been assigned a value) and false otherwise */
+    public boolean isSetKeyword() {
+      return this.keyword != null;
+    }
+
+    public void setKeywordIsSet(boolean value) {
+      if (!value) {
+        this.keyword = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case KEYWORD:
+        if (value == null) {
+          unsetKeyword();
+        } else {
+          setKeyword((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case KEYWORD:
+        return getKeyword();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case KEYWORD:
+        return isSetKeyword();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof searchByKeyword_args)
+        return this.equals((searchByKeyword_args)that);
+      return false;
+    }
+
+    public boolean equals(searchByKeyword_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_keyword = true && this.isSetKeyword();
+      boolean that_present_keyword = true && that.isSetKeyword();
+      if (this_present_keyword || that_present_keyword) {
+        if (!(this_present_keyword && that_present_keyword))
+          return false;
+        if (!this.keyword.equals(that.keyword))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(searchByKeyword_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetKeyword()).compareTo(other.isSetKeyword());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetKeyword()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.keyword, other.keyword);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("searchByKeyword_args(");
+      boolean first = true;
+
+      sb.append("keyword:");
+      if (this.keyword == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.keyword);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class searchByKeyword_argsStandardSchemeFactory implements SchemeFactory {
+      public searchByKeyword_argsStandardScheme getScheme() {
+        return new searchByKeyword_argsStandardScheme();
+      }
+    }
+
+    private static class searchByKeyword_argsStandardScheme extends StandardScheme<searchByKeyword_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, searchByKeyword_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // KEYWORD
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.keyword = iprot.readString();
+                struct.setKeywordIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, searchByKeyword_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.keyword != null) {
+          oprot.writeFieldBegin(KEYWORD_FIELD_DESC);
+          oprot.writeString(struct.keyword);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class searchByKeyword_argsTupleSchemeFactory implements SchemeFactory {
+      public searchByKeyword_argsTupleScheme getScheme() {
+        return new searchByKeyword_argsTupleScheme();
+      }
+    }
+
+    private static class searchByKeyword_argsTupleScheme extends TupleScheme<searchByKeyword_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, searchByKeyword_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetKeyword()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetKeyword()) {
+          oprot.writeString(struct.keyword);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, searchByKeyword_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.keyword = iprot.readString();
+          struct.setKeywordIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class searchByKeyword_result implements org.apache.thrift.TBase<searchByKeyword_result, searchByKeyword_result._Fields>, java.io.Serializable, Cloneable, Comparable<searchByKeyword_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchByKeyword_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new searchByKeyword_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new searchByKeyword_resultTupleSchemeFactory());
+    }
+
+    public List<Book> success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Book.class))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchByKeyword_result.class, metaDataMap);
+    }
+
+    public searchByKeyword_result() {
+    }
+
+    public searchByKeyword_result(
+      List<Book> success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public searchByKeyword_result(searchByKeyword_result other) {
+      if (other.isSetSuccess()) {
+        List<Book> __this__success = new ArrayList<Book>(other.success.size());
+        for (Book other_element : other.success) {
+          __this__success.add(new Book(other_element));
+        }
+        this.success = __this__success;
+      }
+    }
+
+    public searchByKeyword_result deepCopy() {
+      return new searchByKeyword_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<Book> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(Book elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<Book>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<Book> getSuccess() {
+      return this.success;
+    }
+
+    public searchByKeyword_result setSuccess(List<Book> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<Book>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof searchByKeyword_result)
+        return this.equals((searchByKeyword_result)that);
+      return false;
+    }
+
+    public boolean equals(searchByKeyword_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(searchByKeyword_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("searchByKeyword_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class searchByKeyword_resultStandardSchemeFactory implements SchemeFactory {
+      public searchByKeyword_resultStandardScheme getScheme() {
+        return new searchByKeyword_resultStandardScheme();
+      }
+    }
+
+    private static class searchByKeyword_resultStandardScheme extends StandardScheme<searchByKeyword_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, searchByKeyword_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
+                  struct.success = new ArrayList<Book>(_list8.size);
+                  for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+                  {
+                    Book _elem10;
+                    _elem10 = new Book();
+                    _elem10.read(iprot);
+                    struct.success.add(_elem10);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, searchByKeyword_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
+            for (Book _iter11 : struct.success)
+            {
+              _iter11.write(oprot);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class searchByKeyword_resultTupleSchemeFactory implements SchemeFactory {
+      public searchByKeyword_resultTupleScheme getScheme() {
+        return new searchByKeyword_resultTupleScheme();
+      }
+    }
+
+    private static class searchByKeyword_resultTupleScheme extends TupleScheme<searchByKeyword_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, searchByKeyword_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (Book _iter12 : struct.success)
+            {
+              _iter12.write(oprot);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, searchByKeyword_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Book>(_list13.size);
+            for (int _i14 = 0; _i14 < _list13.size; ++_i14)
+            {
+              Book _elem15;
+              _elem15 = new Book();
+              _elem15.read(iprot);
+              struct.success.add(_elem15);
+            }
+          }
+          struct.setSuccessIsSet(true);
         }
       }
     }

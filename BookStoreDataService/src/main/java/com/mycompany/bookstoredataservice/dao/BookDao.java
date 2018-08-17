@@ -5,13 +5,17 @@
  */
 package com.mycompany.bookstoredataservice.dao;
 
+import com.mycompany.bookstoredataservice.client.ElasticClient;
 import com.mycompany.bookstoredataservice.utils.Utils;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookNotFoundException;
 import com.mycompany.bookstorethriftshare.BookService;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import kyotocabinet.DB;
 import org.apache.thrift.TException;
 
@@ -21,6 +25,16 @@ import org.apache.thrift.TException;
  */
 public class BookDao implements BookService.Iface {
 
+	private ElasticClient elasticClient = null;
+	
+	public BookDao() {
+		try {
+			elasticClient = new ElasticClient(this);
+		} catch (UnknownHostException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	private String generateBookId() {
 		Date now = new Date();
 		return "book:" + now.getTime() + "";
@@ -32,7 +46,7 @@ public class BookDao implements BookService.Iface {
 		String bookId = generateBookId();
 		newBook.setId(bookId);
 		bookDB.add(bookId.getBytes(), Utils.toByte(newBook));
-
+		elasticClient.addBook(newBook);
 		return true;
 	}
 
@@ -75,7 +89,7 @@ public class BookDao implements BookService.Iface {
 			updateBook.setImage(oldBook.getImage());
 			updateBook.setExtImage(oldBook.getExtImage());
 		}		
-
+		elasticClient.updateBook(updateBook);
 		return bookDB.replace(updateBook.id.getBytes(), Utils.toByte(updateBook));
 	}
 
@@ -86,7 +100,12 @@ public class BookDao implements BookService.Iface {
 		if (value == null) {
 			throw new BookNotFoundException("Khong tim thay sach");
 		}
-
+		elasticClient.removeBook(idBook);
 		return bookDB.remove(idBook);
+	}
+
+	@Override
+	public List<Book> searchByKeyword(String keyword) throws TException {
+		return elasticClient.searchByKeyword(keyword);
 	}
 }

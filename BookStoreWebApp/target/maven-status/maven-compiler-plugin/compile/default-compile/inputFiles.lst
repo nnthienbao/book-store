@@ -10,4 +10,5 @@
 /home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/WebServer.java
 /home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/controller/admin/BookAdminController.java
 /home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/controller/AuthenController.java
+/home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/model/BookSearch.java
 /home/cpu02453-local/git/book-store/BookStoreWebApp/src/main/java/com/mycompany/bookstorewebapp/controller/BookController.java

@@ -128,5 +128,10 @@ public class BookDaoV2 implements BookService.Iface {
         
         return true;
     }
+
+	@Override
+	public List<Book> searchByKeyword(String keyword) throws TException {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
     
 }
