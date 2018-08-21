@@ -47,8 +47,11 @@ public class GoogleApiProductBook {
 			String authors = getStrAuthor(volumeInfo.getAuthors());
 			String categories = getStrCategories(volumeInfo.getCategories());
 			int price = getPrice(saleInfo);
+			if(price == -1) continue;
+			if(volumeInfo.getImageLinks() == null) continue;
+			String imageSrc = volumeInfo.getImageLinks().getThumbnail();
 			
-			results.add(new Book("", title, categories, authors, price, "", ""));
+			results.add(new Book("", title, categories, authors, price, imageSrc, "web"));
 		}
 		return results;
 	}

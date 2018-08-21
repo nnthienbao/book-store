@@ -51,7 +51,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="agileinfo_single">
                     <h5>[[${book.name}]]</h5>
                     <div class="col-md-4 agileinfo_single_left">
-                            <img id="example" th:src="*{'data:image/'+book.extImage+';base64,'+book.image}" alt=" " class="img-responsive">
+						<th:block th:switch="${book.extImage}">								
+							<img th:case="'web'" id="example" th:src="${book.image}" alt=" " class="img-responsive">
+							<img th:case="*" id="example" th:src="*{'data:image/'+book.extImage+';base64,'+book.image}" alt=" " class="img-responsive">
+						</th:block>                            
                     </div>
                     <div class="col-md-8 agileinfo_single_right">
                             <div class="w3agile_description">
