@@ -46,7 +46,7 @@ public class BookService {
 
     public boolean remove(String idBook, String token) throws PermissionDeniedException, org.apache.thrift.TException;
 
-    public List<Book> searchByKeyword(String keyword) throws org.apache.thrift.TException;
+    public List<Book> searchByKeyword(String keyword) throws SearchNotFoundException, org.apache.thrift.TException;
 
   }
 
@@ -212,7 +212,7 @@ public class BookService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "remove failed: unknown result");
     }
 
-    public List<Book> searchByKeyword(String keyword) throws org.apache.thrift.TException
+    public List<Book> searchByKeyword(String keyword) throws SearchNotFoundException, org.apache.thrift.TException
     {
       send_searchByKeyword(keyword);
       return recv_searchByKeyword();
@@ -225,12 +225,15 @@ public class BookService {
       sendBase("searchByKeyword", args);
     }
 
-    public List<Book> recv_searchByKeyword() throws org.apache.thrift.TException
+    public List<Book> recv_searchByKeyword() throws SearchNotFoundException, org.apache.thrift.TException
     {
       searchByKeyword_result result = new searchByKeyword_result();
       receiveBase(result, "searchByKeyword");
       if (result.isSetSuccess()) {
         return result.success;
+      }
+      if (result.ex != null) {
+        throw result.ex;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "searchByKeyword failed: unknown result");
     }
@@ -441,7 +444,7 @@ public class BookService {
         prot.writeMessageEnd();
       }
 
-      public List<Book> getResult() throws org.apache.thrift.TException {
+      public List<Book> getResult() throws SearchNotFoundException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -603,7 +606,11 @@ public class BookService {
 
       public searchByKeyword_result getResult(I iface, searchByKeyword_args args) throws org.apache.thrift.TException {
         searchByKeyword_result result = new searchByKeyword_result();
-        result.success = iface.searchByKeyword(args.keyword);
+        try {
+          result.success = iface.searchByKeyword(args.keyword);
+        } catch (SearchNotFoundException ex) {
+          result.ex = ex;
+        }
         return result;
       }
     }
@@ -933,6 +940,12 @@ public class BookService {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
             searchByKeyword_result result = new searchByKeyword_result();
+            if (e instanceof SearchNotFoundException) {
+                        result.ex = (SearchNotFoundException) e;
+                        result.setExIsSet(true);
+                        msg = result;
+            }
+             else 
             {
               msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
               msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
@@ -5424,6 +5437,7 @@ public class BookService {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("searchByKeyword_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField EX_FIELD_DESC = new org.apache.thrift.protocol.TField("ex", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -5432,10 +5446,12 @@ public class BookService {
     }
 
     public List<Book> success; // required
+    public SearchNotFoundException ex; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      EX((short)1, "ex");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -5452,6 +5468,8 @@ public class BookService {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // EX
+            return EX;
           default:
             return null;
         }
@@ -5498,6 +5516,8 @@ public class BookService {
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
               new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Book.class))));
+      tmpMap.put(_Fields.EX, new org.apache.thrift.meta_data.FieldMetaData("ex", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(searchByKeyword_result.class, metaDataMap);
     }
@@ -5506,10 +5526,12 @@ public class BookService {
     }
 
     public searchByKeyword_result(
-      List<Book> success)
+      List<Book> success,
+      SearchNotFoundException ex)
     {
       this();
       this.success = success;
+      this.ex = ex;
     }
 
     /**
@@ -5523,6 +5545,9 @@ public class BookService {
         }
         this.success = __this__success;
       }
+      if (other.isSetEx()) {
+        this.ex = new SearchNotFoundException(other.ex);
+      }
     }
 
     public searchByKeyword_result deepCopy() {
@@ -5532,6 +5557,7 @@ public class BookService {
     @Override
     public void clear() {
       this.success = null;
+      this.ex = null;
     }
 
     public int getSuccessSize() {
@@ -5573,6 +5599,30 @@ public class BookService {
       }
     }
 
+    public SearchNotFoundException getEx() {
+      return this.ex;
+    }
+
+    public searchByKeyword_result setEx(SearchNotFoundException ex) {
+      this.ex = ex;
+      return this;
+    }
+
+    public void unsetEx() {
+      this.ex = null;
+    }
+
+    /** Returns true if field ex is set (has been assigned a value) and false otherwise */
+    public boolean isSetEx() {
+      return this.ex != null;
+    }
+
+    public void setExIsSet(boolean value) {
+      if (!value) {
+        this.ex = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case SUCCESS:
@@ -5583,6 +5633,14 @@ public class BookService {
         }
         break;
 
+      case EX:
+        if (value == null) {
+          unsetEx();
+        } else {
+          setEx((SearchNotFoundException)value);
+        }
+        break;
+
       }
     }
 
@@ -5590,6 +5648,9 @@ public class BookService {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case EX:
+        return getEx();
 
       }
       throw new IllegalStateException();
@@ -5604,6 +5665,8 @@ public class BookService {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case EX:
+        return isSetEx();
       }
       throw new IllegalStateException();
     }
@@ -5627,6 +5690,15 @@ public class BookService {
         if (!(this_present_success && that_present_success))
           return false;
         if (!this.success.equals(that.success))
+          return false;
+      }
+
+      boolean this_present_ex = true && this.isSetEx();
+      boolean that_present_ex = true && that.isSetEx();
+      if (this_present_ex || that_present_ex) {
+        if (!(this_present_ex && that_present_ex))
+          return false;
+        if (!this.ex.equals(that.ex))
           return false;
       }
 
@@ -5656,6 +5728,16 @@ public class BookService {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetEx()).compareTo(other.isSetEx());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetEx()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ex, other.ex);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -5681,6 +5763,14 @@ public class BookService {
         sb.append("null");
       } else {
         sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("ex:");
+      if (this.ex == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.ex);
       }
       first = false;
       sb.append(")");
@@ -5745,6 +5835,15 @@ public class BookService {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 1: // EX
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.ex = new SearchNotFoundException();
+                struct.ex.read(iprot);
+                struct.setExIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -5772,6 +5871,11 @@ public class BookService {
           }
           oprot.writeFieldEnd();
         }
+        if (struct.ex != null) {
+          oprot.writeFieldBegin(EX_FIELD_DESC);
+          struct.ex.write(oprot);
+          oprot.writeFieldEnd();
+        }
         oprot.writeFieldStop();
         oprot.writeStructEnd();
       }
@@ -5793,7 +5897,10 @@ public class BookService {
         if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetEx()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
@@ -5803,12 +5910,15 @@ public class BookService {
             }
           }
         }
+        if (struct.isSetEx()) {
+          struct.ex.write(oprot);
+        }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, searchByKeyword_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
+        BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
             org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
@@ -5822,6 +5932,11 @@ public class BookService {
             }
           }
           struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.ex = new SearchNotFoundException();
+          struct.ex.read(iprot);
+          struct.setExIsSet(true);
         }
       }
     }

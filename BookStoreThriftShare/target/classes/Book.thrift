@@ -19,6 +19,11 @@ exception PermissionDeniedException {
     2:i32 errorCode
 }
 
+exception SearchNotFoundException {
+	1:string message,
+	2:i32 errorCode
+}
+
 service BookService
 {
     list<Book> getList(),
@@ -26,5 +31,5 @@ service BookService
     bool add(1:Book newBook, 2:string token) throws (1:PermissionDeniedException ex),
     bool update(1:Book updateBook, 2:string token) throws (1:PermissionDeniedException ex),
     bool remove(1:string idBook, 2:string token) throws (1:PermissionDeniedException ex),
-	list<Book> searchByKeyword(1:string keyword)
+	list<Book> searchByKeyword(1:string keyword) throws (1:SearchNotFoundException ex)
 }

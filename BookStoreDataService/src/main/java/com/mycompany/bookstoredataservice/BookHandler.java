@@ -9,6 +9,7 @@ import com.mycompany.bookstoredataservice.dao.BookDao;
 import com.mycompany.bookstoredataservice.dao.BookDaoV2;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
+import com.mycompany.bookstorethriftshare.SearchNotFoundException;
 import java.util.List;
 import org.apache.thrift.TException;
 
@@ -46,7 +47,10 @@ public class BookHandler implements BookService.Iface{
     }
 
 	@Override
-	public List<Book> searchByKeyword(String keyword) throws TException {
-		return bookDao.searchByKeyword(keyword);
+	public List<Book> searchByKeyword(String keyword) throws TException, SearchNotFoundException {
+		List<Book> results = bookDao.searchByKeyword(keyword);
+		if(results.isEmpty())
+			throw new SearchNotFoundException("Khong tim thay ket qua nao", 400);
+		return results;
 	}
 }

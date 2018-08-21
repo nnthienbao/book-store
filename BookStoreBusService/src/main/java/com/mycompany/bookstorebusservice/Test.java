@@ -22,10 +22,10 @@ public class Test {
             transport = new TSocket("localhost", 3001);
             transport.open();
             TProtocol protocol = new  TBinaryProtocol(transport);
-            TMultiplexedProtocol mulProtocol = new TMultiplexedProtocol(protocol, "userService");
-            UserService.Client userClient = new UserService.Client(mulProtocol);
+            TMultiplexedProtocol mulProtocol = new TMultiplexedProtocol(protocol, "bookService");
+            BookService.Client bookService = new BookService.Client(mulProtocol);
             
-            System.out.println(userClient.authenticate("nnthienbao", "123456"));
+            System.out.println(bookService.searchByKeyword("aaaaaaaaaaaaaaaaaaaa"));
             
             transport.close();
         } catch (Exception e) {

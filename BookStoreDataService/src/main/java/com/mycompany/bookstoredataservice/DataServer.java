@@ -5,6 +5,7 @@
  */
 package com.mycompany.bookstoredataservice;
 
+import com.mycompany.bookstoredataservice.worker.BookConsumerWorker;
 import com.mycompany.bookstorethriftshare.BookService;
 import com.mycompany.bookstorethriftshare.UserService;
 import org.apache.thrift.TMultiplexedProcessor;
@@ -20,6 +21,10 @@ import org.apache.thrift.transport.TTransportException;
  */
 public class DataServer {
     public static void main(String args[]) throws TTransportException {
+		
+		Thread t = new Thread(new BookConsumerWorker());
+		t.start();
+		
         BookHandler bookHandler = new BookHandler();
         UserHandler userHandler = new UserHandler();
         

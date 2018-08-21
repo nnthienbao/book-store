@@ -6,9 +6,11 @@
 package com.mycompany.bookstorebusservice;
 
 import com.mycompany.bookstorebusservice.authenticate.JWTManager;
+import com.mycompany.bookstorebusservice.producer.BookProducer;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
 import com.mycompany.bookstorethriftshare.PermissionDeniedException;
+import com.mycompany.bookstorethriftshare.SearchNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.thrift.TException;
@@ -23,6 +25,7 @@ public class BookHandler implements BookService.Iface{
     
     private TMultiplexedProtocol mulProtocol;
     private final BookService.Client client;
+	private final BookProducer bookProducer = new BookProducer();
     
     public BookHandler(TProtocol generalProtocol) {
         mulProtocol = new  TMultiplexedProtocol(generalProtocol, "bookService");
@@ -71,6 +74,10 @@ public class BookHandler implements BookService.Iface{
 	public List<Book> searchByKeyword(String keyword) {
 		try {
 			return client.searchByKeyword(keyword);
+		} catch (SearchNotFoundException e) {
+			System.out.println(e.errorCode + ":" + e.getMessage());
+			bookProducer.sendKeywordSearchNotFound(keyword);
+			return new ArrayList<>();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<>();
