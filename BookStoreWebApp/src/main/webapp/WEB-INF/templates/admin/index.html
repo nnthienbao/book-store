@@ -84,6 +84,15 @@
 									</tr>
 									</tbody>
 								</table>
+								<nav th:if="${totalPage > 0}" class="text-center" aria-label="Page navigation example">
+									<ul class="pagination">
+										<li class="page-item"><a class="page-link" th:href="${currentPage>0}?@{/admin/index.html(page=${currentPage - 1})}">Previous</a></li>						
+										<th:block th:each="page: ${#numbers.sequence(0, totalPage - 1)}">
+											<li th:class="${currentPage==page} ? active"><a class="page-link" th:href="@{/admin/index.html(page=${page})}" th:text="${page + 1}"></a></li>
+										</th:block>
+										<li class="page-item"><a class="page-link" th:href="${currentPage<totalPage-1}?@{/admin/index.html(page=${currentPage + 1})}">Next</a></li>
+									</ul>
+								</nav>
 							</div>
 						</div>
 					</div>

@@ -75,7 +75,7 @@
                     </div>
                     <div class="clearfix"> </div>
                 </div>
-				<nav th:if="${totalPage > 0}" aria-label="Page navigation example">
+				<nav th:if="${totalPage > 0}" class="text-center" aria-label="Page navigation example">
 					<ul class="pagination">
 						<li class="page-item"><a class="page-link" th:href="${currentPage>0}?@{/index.html(page=${currentPage - 1})}">Previous</a></li>						
 						<th:block th:each="page: ${#numbers.sequence(0, totalPage - 1)}">

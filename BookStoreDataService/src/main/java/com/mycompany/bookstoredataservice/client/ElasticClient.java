@@ -65,14 +65,13 @@ public class ElasticClient {
 		return result;
 	}
 	
-	public ResultQueryBook getList(int page, int limit) {		
+	public ResultQueryBook getList(int page, int limit) {			
 		ResultQueryBook result = new ResultQueryBook();
 		SearchResponse response = elasticClient.prepareSearch("bookstore")
         .setTypes("book")
         .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
         .setQuery(QueryBuilders.matchAllQuery()).setFrom(page * limit).setSize(limit)
         .get();
-		
 		SearchHit[] hits = response.getHits().getHits();
 		for(SearchHit hit : hits) {
 			try {

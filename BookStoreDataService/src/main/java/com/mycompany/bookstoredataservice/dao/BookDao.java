@@ -11,6 +11,7 @@ import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookNotFoundException;
 import com.mycompany.bookstorethriftshare.BookService;
 import com.mycompany.bookstorethriftshare.ResultQueryBook;
+import com.mycompany.bookstorethriftshare.SearchNotFoundException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;

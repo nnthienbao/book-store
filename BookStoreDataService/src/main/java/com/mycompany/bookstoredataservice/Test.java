@@ -28,8 +28,12 @@ public class Test {
             TProtocol protocol = new  TBinaryProtocol(transport);
             TMultiplexedProtocol mulProtocol = new TMultiplexedProtocol(protocol, "bookService");
             BookService.Client bookClient = new BookService.Client(mulProtocol);
-						
-            System.out.println(bookClient.getList(1, 2).getTotal());
+			
+			TMultiplexedProtocol userProtocol = new TMultiplexedProtocol(protocol, "userService");
+            UserService.Client userClient = new UserService.Client(userProtocol);	
+			
+            //System.out.println(bookClient.getList(1, 2).getTotal());
+			System.out.println(userClient.add(new User("nnthienbao", "123456", "ROLE_ADMIN")));
             
             transport.close();
         } catch (Exception e) {

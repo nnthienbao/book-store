@@ -48,9 +48,13 @@ public class BookHandler implements BookService.Iface{
 
 	@Override
 	public List<Book> searchByKeyword(String keyword) throws TException, SearchNotFoundException {
-		List<Book> results = bookDao.searchByKeyword(keyword);
-		if(results.isEmpty())
+		try {
+			List<Book> results = bookDao.searchByKeyword(keyword);
+			if(results.isEmpty())
+				throw new SearchNotFoundException("Khong tim thay ket qua nao", 400);
+			return results;
+		} catch (Exception ex) {
 			throw new SearchNotFoundException("Khong tim thay ket qua nao", 400);
-		return results;
+		}
 	}
 }
