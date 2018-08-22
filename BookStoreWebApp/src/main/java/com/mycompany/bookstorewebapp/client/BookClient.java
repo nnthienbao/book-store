@@ -7,6 +7,7 @@ package com.mycompany.bookstorewebapp.client;
 
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
+import com.mycompany.bookstorethriftshare.ResultQueryBook;
 import java.util.List;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -26,8 +27,8 @@ public class BookClient implements BookService.Iface {
         client = new BookService.Client(mulProtocol);
     }
     @Override
-    public List<Book> getList() throws TException {
-        return client.getList();
+    public ResultQueryBook getList(int page, int limit) throws TException {
+        return client.getList(page, limit);
     }
 
     @Override

@@ -8,6 +8,7 @@ package com.mycompany.bookstoredataservice.client;
 import com.mycompany.bookstoredataservice.dao.BookDao;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookNotFoundException;
+import com.mycompany.bookstorethriftshare.ResultQueryBook;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -60,6 +61,30 @@ public class ElasticClient {
 				ex.printStackTrace();
 			}
 		}
+		
+		return result;
+	}
+	
+	public ResultQueryBook getList(int page, int limit) {		
+		ResultQueryBook result = new ResultQueryBook();
+		SearchResponse response = elasticClient.prepareSearch("bookstore")
+        .setTypes("book")
+        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+        .setQuery(QueryBuilders.matchAllQuery()).setFrom(page * limit).setSize(limit)
+        .get();
+		
+		SearchHit[] hits = response.getHits().getHits();
+		for(SearchHit hit : hits) {
+			try {
+				String bookId = hit.getId();
+				Book book = bookDao.findById(bookId);
+				result.addToListBooks(book);
+			} catch (BookNotFoundException ex) {				
+				ex.printStackTrace();
+			}
+		}
+		
+		result.setTotal(response.getHits().getTotalHits());
 		
 		return result;
 	}

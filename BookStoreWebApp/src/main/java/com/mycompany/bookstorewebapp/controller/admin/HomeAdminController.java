@@ -24,7 +24,7 @@ public class HomeAdminController {
     @GetMapping({"", "/", "/index"})
     public String getIndex(Model model) {
         try {
-            model.addAttribute("listBooks", clientFactory.getBookClient().getList());            
+            model.addAttribute("listBooks", clientFactory.getBookClient().getList(0, 1000).getListBooks());            
         } catch (TException ex) {
             ex.printStackTrace();
         }

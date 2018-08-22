@@ -10,6 +10,7 @@ import com.mycompany.bookstoredataservice.utils.Utils;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookNotFoundException;
 import com.mycompany.bookstorethriftshare.BookService;
+import com.mycompany.bookstorethriftshare.ResultQueryBook;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,15 +52,16 @@ public class BookDao implements BookService.Iface {
 	}
 
 	@Override
-	public List<Book> getList() throws TException {
-		List<Book> listBooks = new ArrayList();
-		DB bookDB = FactoryDb.getDBBookStore();
-		List<String> keys = bookDB.match_prefix("book:", -1);
-		for (String key : keys) {
-			byte[] bytesBook = bookDB.get(key.getBytes());
-			listBooks.add((Book) Utils.toObject(bytesBook));
-		}
-		return listBooks;
+	public ResultQueryBook getList(int page, int limit) throws TException {
+//		List<Book> listBooks = new ArrayList();
+//		DB bookDB = FactoryDb.getDBBookStore();
+//		List<String> keys = bookDB.match_prefix("book:", -1);
+//		for (String key : keys) {
+//			byte[] bytesBook = bookDB.get(key.getBytes());
+//			listBooks.add((Book) Utils.toObject(bytesBook));
+//		}
+//		return listBooks;
+		return elasticClient.getList(page, limit);
 	}
 
 	@Override

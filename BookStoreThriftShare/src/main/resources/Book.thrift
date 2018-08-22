@@ -10,6 +10,11 @@ struct Book {
     7:string extImage
 }
 
+struct ResultQueryBook {
+	1:i64 total;
+	2:list<Book> listBooks
+}
+
 exception BookNotFoundException {
     1:string message
 }
@@ -26,7 +31,7 @@ exception SearchNotFoundException {
 
 service BookService
 {
-    list<Book> getList(),
+    ResultQueryBook getList(1:i32 page, 2:i32 limit),
     Book findById(1:string id),
     bool add(1:Book newBook, 2:string token) throws (1:PermissionDeniedException ex),
     bool update(1:Book updateBook, 2:string token) throws (1:PermissionDeniedException ex),

@@ -5,7 +5,6 @@
  */
 package com.mycompany.bookstoredataservice;
 
-import com.mycompany.bookstoredataservice.dao.BookDaoV2;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
 import com.mycompany.bookstorethriftshare.User;
@@ -27,11 +26,10 @@ public class Test {
             transport = new TSocket("localhost", 3000);
             transport.open();
             TProtocol protocol = new  TBinaryProtocol(transport);
-            TMultiplexedProtocol mulProtocol = new TMultiplexedProtocol(protocol, "userService");
-            UserService.Client userClient = new UserService.Client(mulProtocol);
-            
-            System.out.println(userClient.add(new User("nnthienbao", "123456", "ROLE_ADMIN")));
-            //System.out.println(userClient.getUser("nnthienbao", "123456"));
+            TMultiplexedProtocol mulProtocol = new TMultiplexedProtocol(protocol, "bookService");
+            BookService.Client bookClient = new BookService.Client(mulProtocol);
+						
+            System.out.println(bookClient.getList(1, 2).getTotal());
             
             transport.close();
         } catch (Exception e) {

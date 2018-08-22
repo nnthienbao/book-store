@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class GoogleApiProductBook {
 
 	private static final String APPLICATION_NAME = "bookstore";
-	private static final String API_KEY = "AIzaSyBVGtH3TJudwjVVbbw5raG4yXsU2a51Xrs";
+	private static final String API_KEY = "AIzaSyDq-J5DjAhKpOQfglJe3FwYW4YRqwhSAAo";
 	
 	public static java.util.List<Book> productByKeyword(String keyword) throws IOException, GeneralSecurityException {
 		final Books books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), null)

@@ -6,9 +6,9 @@
 package com.mycompany.bookstoredataservice;
 
 import com.mycompany.bookstoredataservice.dao.BookDao;
-import com.mycompany.bookstoredataservice.dao.BookDaoV2;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
+import com.mycompany.bookstorethriftshare.ResultQueryBook;
 import com.mycompany.bookstorethriftshare.SearchNotFoundException;
 import java.util.List;
 import org.apache.thrift.TException;
@@ -22,8 +22,8 @@ public class BookHandler implements BookService.Iface{
     private final BookDao bookDao = new BookDao();
     
     @Override
-    public List<Book> getList() throws TException {
-        return bookDao.getList();
+    public ResultQueryBook getList(int page, int limit) throws TException {
+        return bookDao.getList(page, limit);
     }
 
     @Override

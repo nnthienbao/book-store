@@ -36,7 +36,7 @@ public class BookService {
 
   public interface Iface {
 
-    public List<Book> getList() throws org.apache.thrift.TException;
+    public ResultQueryBook getList(int page, int limit) throws org.apache.thrift.TException;
 
     public Book findById(String id) throws org.apache.thrift.TException;
 
@@ -52,7 +52,7 @@ public class BookService {
 
   public interface AsyncIface {
 
-    public void getList(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void getList(int page, int limit, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
     public void findById(String id, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
@@ -86,19 +86,21 @@ public class BookService {
       super(iprot, oprot);
     }
 
-    public List<Book> getList() throws org.apache.thrift.TException
+    public ResultQueryBook getList(int page, int limit) throws org.apache.thrift.TException
     {
-      send_getList();
+      send_getList(page, limit);
       return recv_getList();
     }
 
-    public void send_getList() throws org.apache.thrift.TException
+    public void send_getList(int page, int limit) throws org.apache.thrift.TException
     {
       getList_args args = new getList_args();
+      args.setPage(page);
+      args.setLimit(limit);
       sendBase("getList", args);
     }
 
-    public List<Book> recv_getList() throws org.apache.thrift.TException
+    public ResultQueryBook recv_getList() throws org.apache.thrift.TException
     {
       getList_result result = new getList_result();
       receiveBase(result, "getList");
@@ -256,26 +258,32 @@ public class BookService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getList(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void getList(int page, int limit, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getList_call method_call = new getList_call(resultHandler, this, ___protocolFactory, ___transport);
+      getList_call method_call = new getList_call(page, limit, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getList_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public getList_call(org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private int page;
+      private int limit;
+      public getList_call(int page, int limit, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.page = page;
+        this.limit = limit;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getList", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getList_args args = new getList_args();
+        args.setPage(page);
+        args.setLimit(limit);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<Book> getResult() throws org.apache.thrift.TException {
+      public ResultQueryBook getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -491,7 +499,7 @@ public class BookService {
 
       public getList_result getResult(I iface, getList_args args) throws org.apache.thrift.TException {
         getList_result result = new getList_result();
-        result.success = iface.getList();
+        result.success = iface.getList(args.page, args.limit);
         return result;
       }
     }
@@ -637,7 +645,7 @@ public class BookService {
       return processMap;
     }
 
-    public static class getList<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getList_args, List<Book>> {
+    public static class getList<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getList_args, ResultQueryBook> {
       public getList() {
         super("getList");
       }
@@ -646,10 +654,10 @@ public class BookService {
         return new getList_args();
       }
 
-      public AsyncMethodCallback<List<Book>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+      public AsyncMethodCallback<ResultQueryBook> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<List<Book>>() { 
-          public void onComplete(List<Book> o) {
+        return new AsyncMethodCallback<ResultQueryBook>() { 
+          public void onComplete(ResultQueryBook o) {
             getList_result result = new getList_result();
             result.success = o;
             try {
@@ -683,8 +691,8 @@ public class BookService {
         return false;
       }
 
-      public void start(I iface, getList_args args, org.apache.thrift.async.AsyncMethodCallback<List<Book>> resultHandler) throws TException {
-        iface.getList(resultHandler);
+      public void start(I iface, getList_args args, org.apache.thrift.async.AsyncMethodCallback<ResultQueryBook> resultHandler) throws TException {
+        iface.getList(args.page, args.limit,resultHandler);
       }
     }
 
@@ -975,6 +983,8 @@ public class BookService {
   public static class getList_args implements org.apache.thrift.TBase<getList_args, getList_args._Fields>, java.io.Serializable, Cloneable, Comparable<getList_args>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getList_args");
 
+    private static final org.apache.thrift.protocol.TField PAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("page", org.apache.thrift.protocol.TType.I32, (short)1);
+    private static final org.apache.thrift.protocol.TField LIMIT_FIELD_DESC = new org.apache.thrift.protocol.TField("limit", org.apache.thrift.protocol.TType.I32, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -982,10 +992,13 @@ public class BookService {
       schemes.put(TupleScheme.class, new getList_argsTupleSchemeFactory());
     }
 
+    public int page; // required
+    public int limit; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      PAGE((short)1, "page"),
+      LIMIT((short)2, "limit");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1000,6 +1013,10 @@ public class BookService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
+          case 1: // PAGE
+            return PAGE;
+          case 2: // LIMIT
+            return LIMIT;
           default:
             return null;
         }
@@ -1038,9 +1055,18 @@ public class BookService {
         return _fieldName;
       }
     }
+
+    // isset id assignments
+    private static final int __PAGE_ISSET_ID = 0;
+    private static final int __LIMIT_ISSET_ID = 1;
+    private byte __isset_bitfield = 0;
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.PAGE, new org.apache.thrift.meta_data.FieldMetaData("page", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      tmpMap.put(_Fields.LIMIT, new org.apache.thrift.meta_data.FieldMetaData("limit", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getList_args.class, metaDataMap);
     }
@@ -1048,10 +1074,24 @@ public class BookService {
     public getList_args() {
     }
 
+    public getList_args(
+      int page,
+      int limit)
+    {
+      this();
+      this.page = page;
+      setPageIsSet(true);
+      this.limit = limit;
+      setLimitIsSet(true);
+    }
+
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getList_args(getList_args other) {
+      __isset_bitfield = other.__isset_bitfield;
+      this.page = other.page;
+      this.limit = other.limit;
     }
 
     public getList_args deepCopy() {
@@ -1060,15 +1100,87 @@ public class BookService {
 
     @Override
     public void clear() {
+      setPageIsSet(false);
+      this.page = 0;
+      setLimitIsSet(false);
+      this.limit = 0;
+    }
+
+    public int getPage() {
+      return this.page;
+    }
+
+    public getList_args setPage(int page) {
+      this.page = page;
+      setPageIsSet(true);
+      return this;
+    }
+
+    public void unsetPage() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __PAGE_ISSET_ID);
+    }
+
+    /** Returns true if field page is set (has been assigned a value) and false otherwise */
+    public boolean isSetPage() {
+      return EncodingUtils.testBit(__isset_bitfield, __PAGE_ISSET_ID);
+    }
+
+    public void setPageIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PAGE_ISSET_ID, value);
+    }
+
+    public int getLimit() {
+      return this.limit;
+    }
+
+    public getList_args setLimit(int limit) {
+      this.limit = limit;
+      setLimitIsSet(true);
+      return this;
+    }
+
+    public void unsetLimit() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __LIMIT_ISSET_ID);
+    }
+
+    /** Returns true if field limit is set (has been assigned a value) and false otherwise */
+    public boolean isSetLimit() {
+      return EncodingUtils.testBit(__isset_bitfield, __LIMIT_ISSET_ID);
+    }
+
+    public void setLimitIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __LIMIT_ISSET_ID, value);
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
+      case PAGE:
+        if (value == null) {
+          unsetPage();
+        } else {
+          setPage((Integer)value);
+        }
+        break;
+
+      case LIMIT:
+        if (value == null) {
+          unsetLimit();
+        } else {
+          setLimit((Integer)value);
+        }
+        break;
+
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
+      case PAGE:
+        return Integer.valueOf(getPage());
+
+      case LIMIT:
+        return Integer.valueOf(getLimit());
+
       }
       throw new IllegalStateException();
     }
@@ -1080,6 +1192,10 @@ public class BookService {
       }
 
       switch (field) {
+      case PAGE:
+        return isSetPage();
+      case LIMIT:
+        return isSetLimit();
       }
       throw new IllegalStateException();
     }
@@ -1097,6 +1213,24 @@ public class BookService {
       if (that == null)
         return false;
 
+      boolean this_present_page = true;
+      boolean that_present_page = true;
+      if (this_present_page || that_present_page) {
+        if (!(this_present_page && that_present_page))
+          return false;
+        if (this.page != that.page)
+          return false;
+      }
+
+      boolean this_present_limit = true;
+      boolean that_present_limit = true;
+      if (this_present_limit || that_present_limit) {
+        if (!(this_present_limit && that_present_limit))
+          return false;
+        if (this.limit != that.limit)
+          return false;
+      }
+
       return true;
     }
 
@@ -1113,6 +1247,26 @@ public class BookService {
 
       int lastComparison = 0;
 
+      lastComparison = Boolean.valueOf(isSetPage()).compareTo(other.isSetPage());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetPage()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.page, other.page);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetLimit()).compareTo(other.isSetLimit());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetLimit()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.limit, other.limit);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -1133,6 +1287,13 @@ public class BookService {
       StringBuilder sb = new StringBuilder("getList_args(");
       boolean first = true;
 
+      sb.append("page:");
+      sb.append(this.page);
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("limit:");
+      sb.append(this.limit);
+      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -1152,6 +1313,8 @@ public class BookService {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bitfield = 0;
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -1176,6 +1339,22 @@ public class BookService {
             break;
           }
           switch (schemeField.id) {
+            case 1: // PAGE
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.page = iprot.readI32();
+                struct.setPageIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // LIMIT
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.limit = iprot.readI32();
+                struct.setLimitIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -1191,6 +1370,12 @@ public class BookService {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldBegin(PAGE_FIELD_DESC);
+        oprot.writeI32(struct.page);
+        oprot.writeFieldEnd();
+        oprot.writeFieldBegin(LIMIT_FIELD_DESC);
+        oprot.writeI32(struct.limit);
+        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
       }
@@ -1208,11 +1393,34 @@ public class BookService {
       @Override
       public void write(org.apache.thrift.protocol.TProtocol prot, getList_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetPage()) {
+          optionals.set(0);
+        }
+        if (struct.isSetLimit()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetPage()) {
+          oprot.writeI32(struct.page);
+        }
+        if (struct.isSetLimit()) {
+          oprot.writeI32(struct.limit);
+        }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getList_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          struct.page = iprot.readI32();
+          struct.setPageIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.limit = iprot.readI32();
+          struct.setLimitIsSet(true);
+        }
       }
     }
 
@@ -1221,7 +1429,7 @@ public class BookService {
   public static class getList_result implements org.apache.thrift.TBase<getList_result, getList_result._Fields>, java.io.Serializable, Cloneable, Comparable<getList_result>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getList_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -1229,7 +1437,7 @@ public class BookService {
       schemes.put(TupleScheme.class, new getList_resultTupleSchemeFactory());
     }
 
-    public List<Book> success; // required
+    public ResultQueryBook success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1294,8 +1502,7 @@ public class BookService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Book.class))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ResultQueryBook.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getList_result.class, metaDataMap);
     }
@@ -1304,7 +1511,7 @@ public class BookService {
     }
 
     public getList_result(
-      List<Book> success)
+      ResultQueryBook success)
     {
       this();
       this.success = success;
@@ -1315,11 +1522,7 @@ public class BookService {
      */
     public getList_result(getList_result other) {
       if (other.isSetSuccess()) {
-        List<Book> __this__success = new ArrayList<Book>(other.success.size());
-        for (Book other_element : other.success) {
-          __this__success.add(new Book(other_element));
-        }
-        this.success = __this__success;
+        this.success = new ResultQueryBook(other.success);
       }
     }
 
@@ -1332,26 +1535,11 @@ public class BookService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Book> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(Book elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Book>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Book> getSuccess() {
+    public ResultQueryBook getSuccess() {
       return this.success;
     }
 
-    public getList_result setSuccess(List<Book> success) {
+    public getList_result setSuccess(ResultQueryBook success) {
       this.success = success;
       return this;
     }
@@ -1377,7 +1565,7 @@ public class BookService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Book>)value);
+          setSuccess((ResultQueryBook)value);
         }
         break;
 
@@ -1488,6 +1676,9 @@ public class BookService {
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
       // check for sub-struct validity
+      if (success != null) {
+        success.validate();
+      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -1525,19 +1716,9 @@ public class BookService {
           }
           switch (schemeField.id) {
             case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
-                {
-                  org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                  struct.success = new ArrayList<Book>(_list0.size);
-                  for (int _i1 = 0; _i1 < _list0.size; ++_i1)
-                  {
-                    Book _elem2;
-                    _elem2 = new Book();
-                    _elem2.read(iprot);
-                    struct.success.add(_elem2);
-                  }
-                  iprot.readListEnd();
-                }
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new ResultQueryBook();
+                struct.success.read(iprot);
                 struct.setSuccessIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -1560,14 +1741,7 @@ public class BookService {
         oprot.writeStructBegin(STRUCT_DESC);
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-          {
-            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Book _iter3 : struct.success)
-            {
-              _iter3.write(oprot);
-            }
-            oprot.writeListEnd();
-          }
+          struct.success.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -1593,13 +1767,7 @@ public class BookService {
         }
         oprot.writeBitSet(optionals, 1);
         if (struct.isSetSuccess()) {
-          {
-            oprot.writeI32(struct.success.size());
-            for (Book _iter4 : struct.success)
-            {
-              _iter4.write(oprot);
-            }
-          }
+          struct.success.write(oprot);
         }
       }
 
@@ -1608,17 +1776,8 @@ public class BookService {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          {
-            org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Book>(_list5.size);
-            for (int _i6 = 0; _i6 < _list5.size; ++_i6)
-            {
-              Book _elem7;
-              _elem7 = new Book();
-              _elem7.read(iprot);
-              struct.success.add(_elem7);
-            }
-          }
+          struct.success = new ResultQueryBook();
+          struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }
       }

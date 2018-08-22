@@ -10,6 +10,7 @@ import com.mycompany.bookstorebusservice.producer.BookProducer;
 import com.mycompany.bookstorethriftshare.Book;
 import com.mycompany.bookstorethriftshare.BookService;
 import com.mycompany.bookstorethriftshare.PermissionDeniedException;
+import com.mycompany.bookstorethriftshare.ResultQueryBook;
 import com.mycompany.bookstorethriftshare.SearchNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,8 @@ public class BookHandler implements BookService.Iface{
     }
 
     @Override
-    public List<Book> getList() throws TException {
-        return client.getList();
+    public ResultQueryBook getList(int page, int count) throws TException {
+        return client.getList(page, count);
     }     
 
     @Override

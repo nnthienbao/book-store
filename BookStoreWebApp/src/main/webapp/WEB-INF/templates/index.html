@@ -27,12 +27,12 @@
 		<script type="text/javascript" th:src="@{/static/js/move-top.js}"></script>
 		<script type="text/javascript" src="@{/static/js/easing.js}"></script>
 		<script type="text/javascript">
-jQuery(document).ready(function ($) {
-	$(".scroll").click(function (event) {
-		event.preventDefault();
-		$('html,body').animate({scrollTop: $(this.hash).offset().top}, 1000);
-	});
-});
+			jQuery(document).ready(function ($) {
+				$(".scroll").click(function (event) {
+					event.preventDefault();
+					$('html,body').animate({scrollTop: $(this.hash).offset().top}, 1000);
+				});
+			});
 		</script>
 		<!-- start-smoth-scrolling -->
 	</head>
@@ -75,6 +75,15 @@ jQuery(document).ready(function ($) {
                     </div>
                     <div class="clearfix"> </div>
                 </div>
+				<nav th:if="${totalPage > 0}" aria-label="Page navigation example">
+					<ul class="pagination">
+						<li class="page-item"><a class="page-link" th:href="${currentPage>0}?@{/index.html(page=${currentPage - 1})}">Previous</a></li>						
+						<th:block th:each="page: ${#numbers.sequence(0, totalPage - 1)}">
+							<li th:class="${currentPage==page} ? active"><a class="page-link" th:href="@{/index.html(page=${page})}" th:text="${page + 1}"></a></li>
+						</th:block>
+						<li class="page-item"><a class="page-link" th:href="${currentPage<totalPage-1}?@{/index.html(page=${currentPage + 1})}">Next</a></li>
+					</ul>
+				</nav>
 			</div>
 			<div class="clearfix"></div>
 		</div>
