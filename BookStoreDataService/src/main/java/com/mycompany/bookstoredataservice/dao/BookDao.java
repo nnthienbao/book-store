@@ -111,4 +111,14 @@ public class BookDao implements BookService.Iface {
 	public List<Book> searchByKeyword(String keyword) throws TException {
 		return elasticClient.searchByKeyword(keyword);
 	}
+
+	@Override
+	public ResultQueryBook getBookByKind(String kind, int page, int limit) throws TException {
+		return elasticClient.getBookByKind(kind, page, limit);
+	}
+
+	@Override
+	public List<String> getListKinds() throws TException {
+		return elasticClient.getListKinds();
+	}
 }

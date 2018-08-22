@@ -32,8 +32,8 @@ public class Test {
 			TMultiplexedProtocol userProtocol = new TMultiplexedProtocol(protocol, "userService");
             UserService.Client userClient = new UserService.Client(userProtocol);	
 			
-            //System.out.println(bookClient.getList(1, 2).getTotal());
-			System.out.println(userClient.add(new User("nnthienbao", "123456", "ROLE_ADMIN")));
+            System.out.println(bookClient.getListKinds());
+			//System.out.println(userClient.add(new User("nnthienbao", "123456", "ROLE_ADMIN")));
             
             transport.close();
         } catch (Exception e) {

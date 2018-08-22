@@ -34,6 +34,7 @@ public class BookController {
         try {
             Book book = clientFactory.getBookClient().findById(id); 
             model.addAttribute("book", book);
+			model.addAttribute("listKinds", clientFactory.getBookClient().getListKinds());
         } catch (TException ex) {
             Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -55,5 +55,15 @@ public class BookClient implements BookService.Iface {
 	public List<Book> searchByKeyword(String keyword) throws TException {
 		return client.searchByKeyword(keyword);
 	}
+
+	@Override
+	public ResultQueryBook getBookByKind(String kind, int page, int limit) throws TException {
+		return client.getBookByKind(kind, page, limit);
+	}
+
+	@Override
+	public List<String> getListKinds() throws TException {
+		return client.getListKinds();
+	}
     
 }

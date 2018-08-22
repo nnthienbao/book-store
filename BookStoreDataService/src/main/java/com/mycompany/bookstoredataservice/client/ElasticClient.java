@@ -14,8 +14,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -30,29 +32,35 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.filter.Filters;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 public class ElasticClient {
 
 	private TransportClient elasticClient = null;
 	private BookDao bookDao = null;
-	
+
 	public ElasticClient(BookDao bookDao) throws UnknownHostException {
 		connectToCluster();
 		this.bookDao = bookDao;
 	}
-	
+
 	public List<Book> searchByKeyword(String keyword) {
 		List<Book> result = new ArrayList<>();
 		SearchResponse response = elasticClient.prepareSearch("bookstore")
-        .setTypes("book")
-        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-        .setQuery(QueryBuilders.queryStringQuery(keyword))
-        .get();
-		
+				.setTypes("book")
+				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+				.setQuery(QueryBuilders.queryStringQuery(keyword))
+				.get();
+
 		SearchHit[] hits = response.getHits().getHits();
-		
-		for(SearchHit hit : hits) {
+
+		for (SearchHit hit : hits) {
 			try {
 				String bookId = hit.getId();
 				Book book = bookDao.findById(bookId);
@@ -61,33 +69,33 @@ public class ElasticClient {
 				ex.printStackTrace();
 			}
 		}
-		
+
 		return result;
 	}
-	
-	public ResultQueryBook getList(int page, int limit) {			
+
+	public ResultQueryBook getList(int page, int limit) {
 		ResultQueryBook result = new ResultQueryBook();
 		SearchResponse response = elasticClient.prepareSearch("bookstore")
-        .setTypes("book")
-        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-        .setQuery(QueryBuilders.matchAllQuery()).setFrom(page * limit).setSize(limit)
-        .get();
+				.setTypes("book")
+				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+				.setQuery(QueryBuilders.matchAllQuery()).setFrom(page * limit).setSize(limit)
+				.get();
 		SearchHit[] hits = response.getHits().getHits();
-		for(SearchHit hit : hits) {
+		for (SearchHit hit : hits) {
 			try {
 				String bookId = hit.getId();
 				Book book = bookDao.findById(bookId);
 				result.addToListBooks(book);
-			} catch (BookNotFoundException ex) {				
+			} catch (BookNotFoundException ex) {
 				ex.printStackTrace();
 			}
 		}
-		
+
 		result.setTotal(response.getHits().getTotalHits());
-		
+
 		return result;
 	}
-	
+
 	public boolean addBook(Book book) {
 		IndexResponse response = null;
 		try {
@@ -105,7 +113,7 @@ public class ElasticClient {
 		}
 		return response.status() == RestStatus.OK;
 	}
-	
+
 	public boolean updateBook(Book book) {
 		UpdateResponse response = null;
 		try {
@@ -122,7 +130,7 @@ public class ElasticClient {
 		}
 		return response.status() == RestStatus.OK;
 	}
-	
+
 	public boolean removeBook(String idBook) {
 		DeleteResponse response = elasticClient.prepareDelete("bookstore", "book", idBook).get();
 		return response.status() == RestStatus.OK;
@@ -130,14 +138,54 @@ public class ElasticClient {
 
 	private void connectToCluster() throws UnknownHostException {
 		elasticClient = new PreBuiltTransportClient(Settings.EMPTY)
-        .addTransportAddress(new TransportAddress(InetAddress.getByName("localhost"), 9300));
+				.addTransportAddress(new TransportAddress(InetAddress.getByName("localhost"), 9300));
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
-		if(elasticClient != null) {
+		if (elasticClient != null) {
 			elasticClient.close();
 		}
 	}
-	
+
+	public ResultQueryBook getBookByKind(String kind, int page, int limit) {
+		String query = "kind:" + kind;
+		ResultQueryBook result = new ResultQueryBook();
+		SearchResponse response = elasticClient.prepareSearch("bookstore")
+				.setTypes("book")
+				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+				.setQuery(QueryBuilders.queryStringQuery(query)).setFrom(page * limit).setSize(limit)
+				.get();
+		SearchHit[] hits = response.getHits().getHits();
+		for (SearchHit hit : hits) {
+			try {
+				String bookId = hit.getId();
+				Book book = bookDao.findById(bookId);
+				result.addToListBooks(book);
+			} catch (BookNotFoundException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		result.setTotal(response.getHits().getTotalHits());
+
+		return result;
+	}
+
+	public List<String> getListKinds() {
+		List<String> result = new ArrayList<>();
+		SearchResponse response = elasticClient.prepareSearch("bookstore")
+				.setTypes("book")
+				.addAggregation(AggregationBuilders.terms("book").field("kind")).setSize(0)
+				.get();
+		
+		Terms terms = response.getAggregations().get("book");
+		for (Terms.Bucket entry : terms.getBuckets()) {
+			String key = entry.getKeyAsString();
+			result.add(key);
+		}
+
+		return result;
+	}
+
 }

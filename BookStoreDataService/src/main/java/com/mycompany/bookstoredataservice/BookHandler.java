@@ -57,4 +57,14 @@ public class BookHandler implements BookService.Iface{
 			throw new SearchNotFoundException("Khong tim thay ket qua nao", 400);
 		}
 	}
+
+	@Override
+	public ResultQueryBook getBookByKind(String kind, int page, int limit) throws TException {
+		return bookDao.getBookByKind(kind, page, limit);
+	}
+
+	@Override
+	public List<String> getListKinds() throws TException {
+		return bookDao.getListKinds();
+	}
 }

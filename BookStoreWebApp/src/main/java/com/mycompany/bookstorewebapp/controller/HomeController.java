@@ -28,12 +28,21 @@ public class HomeController {
     @GetMapping({"/", "/index"})
     public String listBook(
 			@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name= "kind", defaultValue = "") String kind,
 			Model model) {
         try {
-			ResultQueryBook result =  clientFactory.getBookClient().getList(page, LIMIT);
-            model.addAttribute("listBooks", result.getListBooks());
-			model.addAttribute("totalPage", (result.total + LIMIT - 1) / LIMIT);
+			ResultQueryBook resultAllBook = null;
+			if(kind.isEmpty()) {
+				resultAllBook =  clientFactory.getBookClient().getList(page, LIMIT);
+			} else {
+				resultAllBook = clientFactory.getBookClient().getBookByKind(kind, page, LIMIT);
+			}
+			
+            model.addAttribute("listBooks", resultAllBook.getListBooks());
+			model.addAttribute("totalPage", (resultAllBook.total + LIMIT - 1) / LIMIT);
 			model.addAttribute("currentPage", page);
+			
+			model.addAttribute("listKinds", clientFactory.getBookClient().getListKinds());
         } catch (TException ex) {
             ex.printStackTrace();
         }

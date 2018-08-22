@@ -84,4 +84,14 @@ public class BookHandler implements BookService.Iface{
 			return new ArrayList<>();
 		}
 	}
+
+	@Override
+	public ResultQueryBook getBookByKind(String kind, int page, int limit) throws TException {
+		return client.getBookByKind(kind, page, limit);
+	}
+
+	@Override
+	public List<String> getListKinds() throws TException {
+		return client.getListKinds();
+	}
 }

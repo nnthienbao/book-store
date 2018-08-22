@@ -38,6 +38,10 @@ public class BookService {
 
     public ResultQueryBook getList(int page, int limit) throws org.apache.thrift.TException;
 
+    public ResultQueryBook getBookByKind(String kind, int page, int limit) throws org.apache.thrift.TException;
+
+    public List<String> getListKinds() throws org.apache.thrift.TException;
+
     public Book findById(String id) throws org.apache.thrift.TException;
 
     public boolean add(Book newBook, String token) throws PermissionDeniedException, org.apache.thrift.TException;
@@ -53,6 +57,10 @@ public class BookService {
   public interface AsyncIface {
 
     public void getList(int page, int limit, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+
+    public void getBookByKind(String kind, int page, int limit, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+
+    public void getListKinds(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
     public void findById(String id, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
@@ -108,6 +116,53 @@ public class BookService {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getList failed: unknown result");
+    }
+
+    public ResultQueryBook getBookByKind(String kind, int page, int limit) throws org.apache.thrift.TException
+    {
+      send_getBookByKind(kind, page, limit);
+      return recv_getBookByKind();
+    }
+
+    public void send_getBookByKind(String kind, int page, int limit) throws org.apache.thrift.TException
+    {
+      getBookByKind_args args = new getBookByKind_args();
+      args.setKind(kind);
+      args.setPage(page);
+      args.setLimit(limit);
+      sendBase("getBookByKind", args);
+    }
+
+    public ResultQueryBook recv_getBookByKind() throws org.apache.thrift.TException
+    {
+      getBookByKind_result result = new getBookByKind_result();
+      receiveBase(result, "getBookByKind");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getBookByKind failed: unknown result");
+    }
+
+    public List<String> getListKinds() throws org.apache.thrift.TException
+    {
+      send_getListKinds();
+      return recv_getListKinds();
+    }
+
+    public void send_getListKinds() throws org.apache.thrift.TException
+    {
+      getListKinds_args args = new getListKinds_args();
+      sendBase("getListKinds", args);
+    }
+
+    public List<String> recv_getListKinds() throws org.apache.thrift.TException
+    {
+      getListKinds_result result = new getListKinds_result();
+      receiveBase(result, "getListKinds");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getListKinds failed: unknown result");
     }
 
     public Book findById(String id) throws org.apache.thrift.TException
@@ -290,6 +345,73 @@ public class BookService {
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_getList();
+      }
+    }
+
+    public void getBookByKind(String kind, int page, int limit, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getBookByKind_call method_call = new getBookByKind_call(kind, page, limit, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getBookByKind_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String kind;
+      private int page;
+      private int limit;
+      public getBookByKind_call(String kind, int page, int limit, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.kind = kind;
+        this.page = page;
+        this.limit = limit;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getBookByKind", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getBookByKind_args args = new getBookByKind_args();
+        args.setKind(kind);
+        args.setPage(page);
+        args.setLimit(limit);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public ResultQueryBook getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getBookByKind();
+      }
+    }
+
+    public void getListKinds(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getListKinds_call method_call = new getListKinds_call(resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getListKinds_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public getListKinds_call(org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getListKinds", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getListKinds_args args = new getListKinds_args();
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<String> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getListKinds();
       }
     }
 
@@ -476,6 +598,8 @@ public class BookService {
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getList", new getList());
+      processMap.put("getBookByKind", new getBookByKind());
+      processMap.put("getListKinds", new getListKinds());
       processMap.put("findById", new findById());
       processMap.put("add", new add());
       processMap.put("update", new update());
@@ -500,6 +624,46 @@ public class BookService {
       public getList_result getResult(I iface, getList_args args) throws org.apache.thrift.TException {
         getList_result result = new getList_result();
         result.success = iface.getList(args.page, args.limit);
+        return result;
+      }
+    }
+
+    public static class getBookByKind<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getBookByKind_args> {
+      public getBookByKind() {
+        super("getBookByKind");
+      }
+
+      public getBookByKind_args getEmptyArgsInstance() {
+        return new getBookByKind_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public getBookByKind_result getResult(I iface, getBookByKind_args args) throws org.apache.thrift.TException {
+        getBookByKind_result result = new getBookByKind_result();
+        result.success = iface.getBookByKind(args.kind, args.page, args.limit);
+        return result;
+      }
+    }
+
+    public static class getListKinds<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getListKinds_args> {
+      public getListKinds() {
+        super("getListKinds");
+      }
+
+      public getListKinds_args getEmptyArgsInstance() {
+        return new getListKinds_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public getListKinds_result getResult(I iface, getListKinds_args args) throws org.apache.thrift.TException {
+        getListKinds_result result = new getListKinds_result();
+        result.success = iface.getListKinds();
         return result;
       }
     }
@@ -637,6 +801,8 @@ public class BookService {
 
     private static <I extends AsyncIface> Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase,?>> getProcessMap(Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase, ?>> processMap) {
       processMap.put("getList", new getList());
+      processMap.put("getBookByKind", new getBookByKind());
+      processMap.put("getListKinds", new getListKinds());
       processMap.put("findById", new findById());
       processMap.put("add", new add());
       processMap.put("update", new update());
@@ -693,6 +859,108 @@ public class BookService {
 
       public void start(I iface, getList_args args, org.apache.thrift.async.AsyncMethodCallback<ResultQueryBook> resultHandler) throws TException {
         iface.getList(args.page, args.limit,resultHandler);
+      }
+    }
+
+    public static class getBookByKind<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getBookByKind_args, ResultQueryBook> {
+      public getBookByKind() {
+        super("getBookByKind");
+      }
+
+      public getBookByKind_args getEmptyArgsInstance() {
+        return new getBookByKind_args();
+      }
+
+      public AsyncMethodCallback<ResultQueryBook> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new AsyncMethodCallback<ResultQueryBook>() { 
+          public void onComplete(ResultQueryBook o) {
+            getBookByKind_result result = new getBookByKind_result();
+            result.success = o;
+            try {
+              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+              return;
+            } catch (Exception e) {
+              LOGGER.error("Exception writing to internal frame buffer", e);
+            }
+            fb.close();
+          }
+          public void onError(Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TBase msg;
+            getBookByKind_result result = new getBookByKind_result();
+            {
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+              return;
+            } catch (Exception ex) {
+              LOGGER.error("Exception writing to internal frame buffer", ex);
+            }
+            fb.close();
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, getBookByKind_args args, org.apache.thrift.async.AsyncMethodCallback<ResultQueryBook> resultHandler) throws TException {
+        iface.getBookByKind(args.kind, args.page, args.limit,resultHandler);
+      }
+    }
+
+    public static class getListKinds<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getListKinds_args, List<String>> {
+      public getListKinds() {
+        super("getListKinds");
+      }
+
+      public getListKinds_args getEmptyArgsInstance() {
+        return new getListKinds_args();
+      }
+
+      public AsyncMethodCallback<List<String>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new AsyncMethodCallback<List<String>>() { 
+          public void onComplete(List<String> o) {
+            getListKinds_result result = new getListKinds_result();
+            result.success = o;
+            try {
+              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+              return;
+            } catch (Exception e) {
+              LOGGER.error("Exception writing to internal frame buffer", e);
+            }
+            fb.close();
+          }
+          public void onError(Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TBase msg;
+            getListKinds_result result = new getListKinds_result();
+            {
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+              return;
+            } catch (Exception ex) {
+              LOGGER.error("Exception writing to internal frame buffer", ex);
+            }
+            fb.close();
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, getListKinds_args args, org.apache.thrift.async.AsyncMethodCallback<List<String>> resultHandler) throws TException {
+        iface.getListKinds(resultHandler);
       }
     }
 
@@ -1778,6 +2046,1560 @@ public class BookService {
         if (incoming.get(0)) {
           struct.success = new ResultQueryBook();
           struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getBookByKind_args implements org.apache.thrift.TBase<getBookByKind_args, getBookByKind_args._Fields>, java.io.Serializable, Cloneable, Comparable<getBookByKind_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBookByKind_args");
+
+    private static final org.apache.thrift.protocol.TField KIND_FIELD_DESC = new org.apache.thrift.protocol.TField("kind", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField PAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("page", org.apache.thrift.protocol.TType.I32, (short)2);
+    private static final org.apache.thrift.protocol.TField LIMIT_FIELD_DESC = new org.apache.thrift.protocol.TField("limit", org.apache.thrift.protocol.TType.I32, (short)3);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getBookByKind_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getBookByKind_argsTupleSchemeFactory());
+    }
+
+    public String kind; // required
+    public int page; // required
+    public int limit; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      KIND((short)1, "kind"),
+      PAGE((short)2, "page"),
+      LIMIT((short)3, "limit");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // KIND
+            return KIND;
+          case 2: // PAGE
+            return PAGE;
+          case 3: // LIMIT
+            return LIMIT;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __PAGE_ISSET_ID = 0;
+    private static final int __LIMIT_ISSET_ID = 1;
+    private byte __isset_bitfield = 0;
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.KIND, new org.apache.thrift.meta_data.FieldMetaData("kind", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.PAGE, new org.apache.thrift.meta_data.FieldMetaData("page", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      tmpMap.put(_Fields.LIMIT, new org.apache.thrift.meta_data.FieldMetaData("limit", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBookByKind_args.class, metaDataMap);
+    }
+
+    public getBookByKind_args() {
+    }
+
+    public getBookByKind_args(
+      String kind,
+      int page,
+      int limit)
+    {
+      this();
+      this.kind = kind;
+      this.page = page;
+      setPageIsSet(true);
+      this.limit = limit;
+      setLimitIsSet(true);
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getBookByKind_args(getBookByKind_args other) {
+      __isset_bitfield = other.__isset_bitfield;
+      if (other.isSetKind()) {
+        this.kind = other.kind;
+      }
+      this.page = other.page;
+      this.limit = other.limit;
+    }
+
+    public getBookByKind_args deepCopy() {
+      return new getBookByKind_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.kind = null;
+      setPageIsSet(false);
+      this.page = 0;
+      setLimitIsSet(false);
+      this.limit = 0;
+    }
+
+    public String getKind() {
+      return this.kind;
+    }
+
+    public getBookByKind_args setKind(String kind) {
+      this.kind = kind;
+      return this;
+    }
+
+    public void unsetKind() {
+      this.kind = null;
+    }
+
+    /** Returns true if field kind is set (has been assigned a value) and false otherwise */
+    public boolean isSetKind() {
+      return this.kind != null;
+    }
+
+    public void setKindIsSet(boolean value) {
+      if (!value) {
+        this.kind = null;
+      }
+    }
+
+    public int getPage() {
+      return this.page;
+    }
+
+    public getBookByKind_args setPage(int page) {
+      this.page = page;
+      setPageIsSet(true);
+      return this;
+    }
+
+    public void unsetPage() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __PAGE_ISSET_ID);
+    }
+
+    /** Returns true if field page is set (has been assigned a value) and false otherwise */
+    public boolean isSetPage() {
+      return EncodingUtils.testBit(__isset_bitfield, __PAGE_ISSET_ID);
+    }
+
+    public void setPageIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PAGE_ISSET_ID, value);
+    }
+
+    public int getLimit() {
+      return this.limit;
+    }
+
+    public getBookByKind_args setLimit(int limit) {
+      this.limit = limit;
+      setLimitIsSet(true);
+      return this;
+    }
+
+    public void unsetLimit() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __LIMIT_ISSET_ID);
+    }
+
+    /** Returns true if field limit is set (has been assigned a value) and false otherwise */
+    public boolean isSetLimit() {
+      return EncodingUtils.testBit(__isset_bitfield, __LIMIT_ISSET_ID);
+    }
+
+    public void setLimitIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __LIMIT_ISSET_ID, value);
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case KIND:
+        if (value == null) {
+          unsetKind();
+        } else {
+          setKind((String)value);
+        }
+        break;
+
+      case PAGE:
+        if (value == null) {
+          unsetPage();
+        } else {
+          setPage((Integer)value);
+        }
+        break;
+
+      case LIMIT:
+        if (value == null) {
+          unsetLimit();
+        } else {
+          setLimit((Integer)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case KIND:
+        return getKind();
+
+      case PAGE:
+        return Integer.valueOf(getPage());
+
+      case LIMIT:
+        return Integer.valueOf(getLimit());
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case KIND:
+        return isSetKind();
+      case PAGE:
+        return isSetPage();
+      case LIMIT:
+        return isSetLimit();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getBookByKind_args)
+        return this.equals((getBookByKind_args)that);
+      return false;
+    }
+
+    public boolean equals(getBookByKind_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_kind = true && this.isSetKind();
+      boolean that_present_kind = true && that.isSetKind();
+      if (this_present_kind || that_present_kind) {
+        if (!(this_present_kind && that_present_kind))
+          return false;
+        if (!this.kind.equals(that.kind))
+          return false;
+      }
+
+      boolean this_present_page = true;
+      boolean that_present_page = true;
+      if (this_present_page || that_present_page) {
+        if (!(this_present_page && that_present_page))
+          return false;
+        if (this.page != that.page)
+          return false;
+      }
+
+      boolean this_present_limit = true;
+      boolean that_present_limit = true;
+      if (this_present_limit || that_present_limit) {
+        if (!(this_present_limit && that_present_limit))
+          return false;
+        if (this.limit != that.limit)
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(getBookByKind_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetKind()).compareTo(other.isSetKind());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetKind()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.kind, other.kind);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetPage()).compareTo(other.isSetPage());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetPage()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.page, other.page);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetLimit()).compareTo(other.isSetLimit());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetLimit()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.limit, other.limit);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getBookByKind_args(");
+      boolean first = true;
+
+      sb.append("kind:");
+      if (this.kind == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.kind);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("page:");
+      sb.append(this.page);
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("limit:");
+      sb.append(this.limit);
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bitfield = 0;
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getBookByKind_argsStandardSchemeFactory implements SchemeFactory {
+      public getBookByKind_argsStandardScheme getScheme() {
+        return new getBookByKind_argsStandardScheme();
+      }
+    }
+
+    private static class getBookByKind_argsStandardScheme extends StandardScheme<getBookByKind_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getBookByKind_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // KIND
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.kind = iprot.readString();
+                struct.setKindIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // PAGE
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.page = iprot.readI32();
+                struct.setPageIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 3: // LIMIT
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.limit = iprot.readI32();
+                struct.setLimitIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getBookByKind_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.kind != null) {
+          oprot.writeFieldBegin(KIND_FIELD_DESC);
+          oprot.writeString(struct.kind);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldBegin(PAGE_FIELD_DESC);
+        oprot.writeI32(struct.page);
+        oprot.writeFieldEnd();
+        oprot.writeFieldBegin(LIMIT_FIELD_DESC);
+        oprot.writeI32(struct.limit);
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getBookByKind_argsTupleSchemeFactory implements SchemeFactory {
+      public getBookByKind_argsTupleScheme getScheme() {
+        return new getBookByKind_argsTupleScheme();
+      }
+    }
+
+    private static class getBookByKind_argsTupleScheme extends TupleScheme<getBookByKind_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getBookByKind_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetKind()) {
+          optionals.set(0);
+        }
+        if (struct.isSetPage()) {
+          optionals.set(1);
+        }
+        if (struct.isSetLimit()) {
+          optionals.set(2);
+        }
+        oprot.writeBitSet(optionals, 3);
+        if (struct.isSetKind()) {
+          oprot.writeString(struct.kind);
+        }
+        if (struct.isSetPage()) {
+          oprot.writeI32(struct.page);
+        }
+        if (struct.isSetLimit()) {
+          oprot.writeI32(struct.limit);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getBookByKind_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(3);
+        if (incoming.get(0)) {
+          struct.kind = iprot.readString();
+          struct.setKindIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.page = iprot.readI32();
+          struct.setPageIsSet(true);
+        }
+        if (incoming.get(2)) {
+          struct.limit = iprot.readI32();
+          struct.setLimitIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getBookByKind_result implements org.apache.thrift.TBase<getBookByKind_result, getBookByKind_result._Fields>, java.io.Serializable, Cloneable, Comparable<getBookByKind_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getBookByKind_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getBookByKind_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getBookByKind_resultTupleSchemeFactory());
+    }
+
+    public ResultQueryBook success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ResultQueryBook.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getBookByKind_result.class, metaDataMap);
+    }
+
+    public getBookByKind_result() {
+    }
+
+    public getBookByKind_result(
+      ResultQueryBook success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getBookByKind_result(getBookByKind_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new ResultQueryBook(other.success);
+      }
+    }
+
+    public getBookByKind_result deepCopy() {
+      return new getBookByKind_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public ResultQueryBook getSuccess() {
+      return this.success;
+    }
+
+    public getBookByKind_result setSuccess(ResultQueryBook success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((ResultQueryBook)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getBookByKind_result)
+        return this.equals((getBookByKind_result)that);
+      return false;
+    }
+
+    public boolean equals(getBookByKind_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(getBookByKind_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getBookByKind_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+      if (success != null) {
+        success.validate();
+      }
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getBookByKind_resultStandardSchemeFactory implements SchemeFactory {
+      public getBookByKind_resultStandardScheme getScheme() {
+        return new getBookByKind_resultStandardScheme();
+      }
+    }
+
+    private static class getBookByKind_resultStandardScheme extends StandardScheme<getBookByKind_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getBookByKind_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new ResultQueryBook();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getBookByKind_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getBookByKind_resultTupleSchemeFactory implements SchemeFactory {
+      public getBookByKind_resultTupleScheme getScheme() {
+        return new getBookByKind_resultTupleScheme();
+      }
+    }
+
+    private static class getBookByKind_resultTupleScheme extends TupleScheme<getBookByKind_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getBookByKind_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getBookByKind_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new ResultQueryBook();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getListKinds_args implements org.apache.thrift.TBase<getListKinds_args, getListKinds_args._Fields>, java.io.Serializable, Cloneable, Comparable<getListKinds_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getListKinds_args");
+
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getListKinds_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getListKinds_argsTupleSchemeFactory());
+    }
+
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+;
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getListKinds_args.class, metaDataMap);
+    }
+
+    public getListKinds_args() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getListKinds_args(getListKinds_args other) {
+    }
+
+    public getListKinds_args deepCopy() {
+      return new getListKinds_args(this);
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getListKinds_args)
+        return this.equals((getListKinds_args)that);
+      return false;
+    }
+
+    public boolean equals(getListKinds_args that) {
+      if (that == null)
+        return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(getListKinds_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getListKinds_args(");
+      boolean first = true;
+
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getListKinds_argsStandardSchemeFactory implements SchemeFactory {
+      public getListKinds_argsStandardScheme getScheme() {
+        return new getListKinds_argsStandardScheme();
+      }
+    }
+
+    private static class getListKinds_argsStandardScheme extends StandardScheme<getListKinds_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getListKinds_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getListKinds_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getListKinds_argsTupleSchemeFactory implements SchemeFactory {
+      public getListKinds_argsTupleScheme getScheme() {
+        return new getListKinds_argsTupleScheme();
+      }
+    }
+
+    private static class getListKinds_argsTupleScheme extends TupleScheme<getListKinds_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getListKinds_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getListKinds_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+      }
+    }
+
+  }
+
+  public static class getListKinds_result implements org.apache.thrift.TBase<getListKinds_result, getListKinds_result._Fields>, java.io.Serializable, Cloneable, Comparable<getListKinds_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getListKinds_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getListKinds_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getListKinds_resultTupleSchemeFactory());
+    }
+
+    public List<String> success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getListKinds_result.class, metaDataMap);
+    }
+
+    public getListKinds_result() {
+    }
+
+    public getListKinds_result(
+      List<String> success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getListKinds_result(getListKinds_result other) {
+      if (other.isSetSuccess()) {
+        List<String> __this__success = new ArrayList<String>(other.success);
+        this.success = __this__success;
+      }
+    }
+
+    public getListKinds_result deepCopy() {
+      return new getListKinds_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<String> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(String elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<String>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<String> getSuccess() {
+      return this.success;
+    }
+
+    public getListKinds_result setSuccess(List<String> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<String>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getListKinds_result)
+        return this.equals((getListKinds_result)that);
+      return false;
+    }
+
+    public boolean equals(getListKinds_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(getListKinds_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getListKinds_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getListKinds_resultStandardSchemeFactory implements SchemeFactory {
+      public getListKinds_resultStandardScheme getScheme() {
+        return new getListKinds_resultStandardScheme();
+      }
+    }
+
+    private static class getListKinds_resultStandardScheme extends StandardScheme<getListKinds_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getListKinds_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
+                  struct.success = new ArrayList<String>(_list8.size);
+                  for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+                  {
+                    String _elem10;
+                    _elem10 = iprot.readString();
+                    struct.success.add(_elem10);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getListKinds_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.success.size()));
+            for (String _iter11 : struct.success)
+            {
+              oprot.writeString(_iter11);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getListKinds_resultTupleSchemeFactory implements SchemeFactory {
+      public getListKinds_resultTupleScheme getScheme() {
+        return new getListKinds_resultTupleScheme();
+      }
+    }
+
+    private static class getListKinds_resultTupleScheme extends TupleScheme<getListKinds_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getListKinds_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (String _iter12 : struct.success)
+            {
+              oprot.writeString(_iter12);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getListKinds_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new ArrayList<String>(_list13.size);
+            for (int _i14 = 0; _i14 < _list13.size; ++_i14)
+            {
+              String _elem15;
+              _elem15 = iprot.readString();
+              struct.success.add(_elem15);
+            }
+          }
           struct.setSuccessIsSet(true);
         }
       }
@@ -5978,14 +7800,14 @@ public class BookService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                  struct.success = new ArrayList<Book>(_list8.size);
-                  for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+                  org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
+                  struct.success = new ArrayList<Book>(_list16.size);
+                  for (int _i17 = 0; _i17 < _list16.size; ++_i17)
                   {
-                    Book _elem10;
-                    _elem10 = new Book();
-                    _elem10.read(iprot);
-                    struct.success.add(_elem10);
+                    Book _elem18;
+                    _elem18 = new Book();
+                    _elem18.read(iprot);
+                    struct.success.add(_elem18);
                   }
                   iprot.readListEnd();
                 }
@@ -6022,9 +7844,9 @@ public class BookService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Book _iter11 : struct.success)
+            for (Book _iter19 : struct.success)
             {
-              _iter11.write(oprot);
+              _iter19.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -6063,9 +7885,9 @@ public class BookService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Book _iter12 : struct.success)
+            for (Book _iter20 : struct.success)
             {
-              _iter12.write(oprot);
+              _iter20.write(oprot);
             }
           }
         }
@@ -6080,14 +7902,14 @@ public class BookService {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Book>(_list13.size);
-            for (int _i14 = 0; _i14 < _list13.size; ++_i14)
+            org.apache.thrift.protocol.TList _list21 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Book>(_list21.size);
+            for (int _i22 = 0; _i22 < _list21.size; ++_i22)
             {
-              Book _elem15;
-              _elem15 = new Book();
-              _elem15.read(iprot);
-              struct.success.add(_elem15);
+              Book _elem23;
+              _elem23 = new Book();
+              _elem23.read(iprot);
+              struct.success.add(_elem23);
             }
           }
           struct.setSuccessIsSet(true);

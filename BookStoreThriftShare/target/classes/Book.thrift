@@ -32,6 +32,8 @@ exception SearchNotFoundException {
 service BookService
 {
     ResultQueryBook getList(1:i32 page, 2:i32 limit),
+	ResultQueryBook getBookByKind(1:string kind, 2:i32 page, 3:i32 limit),
+	list<string> getListKinds(),
     Book findById(1:string id),
     bool add(1:Book newBook, 2:string token) throws (1:PermissionDeniedException ex),
     bool update(1:Book updateBook, 2:string token) throws (1:PermissionDeniedException ex),
