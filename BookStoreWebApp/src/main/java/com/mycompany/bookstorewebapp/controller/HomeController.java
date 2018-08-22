@@ -41,7 +41,7 @@ public class HomeController {
             model.addAttribute("listBooks", resultAllBook.getListBooks());
 			model.addAttribute("totalPage", (resultAllBook.total + LIMIT - 1) / LIMIT);
 			model.addAttribute("currentPage", page);
-			
+			model.addAttribute("kind", kind);
 			model.addAttribute("listKinds", clientFactory.getBookClient().getListKinds());
         } catch (TException ex) {
             ex.printStackTrace();

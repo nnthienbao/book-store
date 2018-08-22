@@ -77,11 +77,11 @@
                 </div>
 				<nav th:if="${totalPage > 0}" class="text-center" aria-label="Page navigation example">
 					<ul class="pagination">
-						<li class="page-item"><a class="page-link" th:href="${currentPage>0}?@{/index.html(page=${currentPage - 1})}">Previous</a></li>						
+						<li class="page-item"><a class="page-link" th:href="${currentPage>0}?@{/index.html(page=${currentPage - 1},kind=${kind})}">Previous</a></li>						
 						<th:block th:each="page: ${#numbers.sequence(0, totalPage - 1)}">
-							<li th:class="${currentPage==page} ? active"><a class="page-link" th:href="@{/index.html(page=${page})}" th:text="${page + 1}"></a></li>
+							<li th:class="${currentPage==page} ? active"><a class="page-link" th:href="@{/index.html(page=${page},kind=${kind})}" th:text="${page + 1}"></a></li>
 						</th:block>
-						<li class="page-item"><a class="page-link" th:href="${currentPage<totalPage-1}?@{/index.html(page=${currentPage + 1})}">Next</a></li>
+						<li class="page-item"><a class="page-link" th:href="${currentPage<totalPage-1}?@{/index.html(page=${currentPage + 1},kind=${kind})}">Next</a></li>
 					</ul>
 				</nav>
 			</div>
